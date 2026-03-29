@@ -50,7 +50,7 @@ export default function InscriptionPage() {
       <div className="bg-white rounded-3xl shadow-lg p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/">
-            <Image src="/logo.jpg" alt="CaribbeOne" width={60} height={60} className="rounded-full mx-auto mb-4 object-cover" />
+            <Image src="/logo.png" alt="CaribbeOne" width={60} height={60} className="rounded-full mx-auto mb-4 object-cover" />
           </Link>
           <h1 className="text-2xl font-black text-[#1a1a1a]">Créer un compte</h1>
           <p className="text-gray-400 text-sm mt-1">Rejoins la communauté caribéenne 🌴</p>

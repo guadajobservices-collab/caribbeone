@@ -40,7 +40,7 @@ export default function HomePage() {
 
           {/* Logo visible dans le hero */}
           <img
-            src="/logo.jpg"
+            src="/logo.png"
             alt="CaribbeOne"
             style={{ height: 72, width: 'auto', marginBottom: 32, display: 'block' }}
           />
