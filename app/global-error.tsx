@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect } from 'react'
+
 export default function GlobalError({
   error,
   reset,
@@ -7,15 +9,18 @@ export default function GlobalError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  useEffect(() => {
+    console.error(error)
+  }, [error])
+
   return (
-    <html>
-      <body className="flex items-center justify-center min-h-screen bg-[#1a1a1a] text-white">
-        <div className="text-center p-8">
-          <h2 className="text-2xl font-bold mb-4">Oups, quelque chose s&apos;est mal passé</h2>
-          <p className="text-gray-400 mb-6">{error.message}</p>
+    <html lang="fr">
+      <body style={{ background: '#0D0D0D', color: '#F7F3EE', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', margin: 0, fontFamily: 'sans-serif' }}>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>Oups, quelque chose s&apos;est mal passé</h2>
           <button
             onClick={() => reset()}
-            className="bg-[#8ab5a7] text-white px-6 py-3 rounded-lg font-semibold"
+            style={{ background: '#5BA8A0', color: '#1A1A1A', padding: '0.75rem 1.5rem', border: 'none', cursor: 'pointer', fontWeight: 600 }}
           >
             Réessayer
           </button>

@@ -1,46 +1,106 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1a1a1a] text-gray-400 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <h3 className="text-white font-bold mb-4 text-[#8ab5a7]">CaribbeOne</h3>
-            <p className="text-sm leading-relaxed">La plateforme de billetterie événementielle inter-îles Caraïbes.</p>
-            <p className="text-xs mt-2 italic">ain&apos;t nothin&apos; like caribbean life !</p>
+    <footer style={{ background: 'var(--color-bg)' }}>
+      {/* Ligne teal en haut */}
+      <div style={{ height: '2px', background: 'var(--color-teal)' }} />
+
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+          {/* Logo + tagline */}
+          <div className="flex flex-col gap-3">
+            <Image
+              src="/logo.jpg"
+              alt="CaribbeOne"
+              width={48}
+              height={48}
+              className="object-cover"
+              style={{ borderRadius: 0 }}
+            />
+            <p
+              className="text-base leading-tight max-w-xs"
+              style={{
+                fontFamily: 'var(--font-display)',
+                color: 'var(--color-text)',
+                letterSpacing: '0.06em',
+                fontSize: '1.1rem',
+              }}
+            >
+              AIN&apos;T NOTHIN&apos; LIKE CARIBBEAN LIFE.
+            </p>
+            <p className="text-sm" style={{ color: 'var(--color-muted)' }}>
+              Billetterie événementielle inter-îles
+            </p>
           </div>
-          <div>
-            <h3 className="text-white font-semibold mb-4 text-sm">Découvrir</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/evenements" className="hover:text-[#8ab5a7] transition-colors">Tous les événements</Link></li>
-              <li><Link href="/evenements?island=guadeloupe" className="hover:text-[#8ab5a7] transition-colors">Guadeloupe</Link></li>
-              <li><Link href="/evenements?island=martinique" className="hover:text-[#8ab5a7] transition-colors">Martinique</Link></li>
-              <li><Link href="/evenements?island=marie-galante" className="hover:text-[#8ab5a7] transition-colors">Marie-Galante</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-4 text-sm">Mon compte</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/auth/inscription" className="hover:text-[#8ab5a7] transition-colors">S&apos;inscrire</Link></li>
-              <li><Link href="/auth/connexion" className="hover:text-[#8ab5a7] transition-colors">Se connecter</Link></li>
-              <li><Link href="/compte/reservations" className="hover:text-[#8ab5a7] transition-colors">Mes réservations</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-4 text-sm">Organisateurs</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/organisateur" className="hover:text-[#8ab5a7] transition-colors">Espace organisateur</Link></li>
-              <li><Link href="/organisateur/evenements/nouveau" className="hover:text-[#8ab5a7] transition-colors">Créer un événement</Link></li>
-            </ul>
+
+          {/* Liens essentiels */}
+          <div className="flex flex-wrap gap-x-12 gap-y-6">
+            <div className="flex flex-col gap-2">
+              <p
+                className="text-xs mb-1"
+                style={{ color: 'var(--color-teal)', fontFamily: 'var(--font-display)', letterSpacing: '0.1em' }}
+              >
+                DÉCOUVRIR
+              </p>
+              <Link href="/evenements" className="text-sm transition-colors hover:opacity-70" style={{ color: 'var(--color-text)' }}>
+                Tous les événements
+              </Link>
+              <Link href="/evenements?island=guadeloupe" className="text-sm transition-colors hover:opacity-70" style={{ color: 'var(--color-muted)' }}>
+                Guadeloupe
+              </Link>
+              <Link href="/evenements?island=martinique" className="text-sm transition-colors hover:opacity-70" style={{ color: 'var(--color-muted)' }}>
+                Martinique
+              </Link>
+              <Link href="/evenements?island=marie-galante" className="text-sm transition-colors hover:opacity-70" style={{ color: 'var(--color-muted)' }}>
+                Marie-Galante
+              </Link>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p
+                className="text-xs mb-1"
+                style={{ color: 'var(--color-teal)', fontFamily: 'var(--font-display)', letterSpacing: '0.1em' }}
+              >
+                ORGANISATEURS
+              </p>
+              <Link href="/organisateur" className="text-sm transition-colors hover:opacity-70" style={{ color: 'var(--color-text)' }}>
+                Espace organisateur
+              </Link>
+              <Link href="/organisateur/evenements/nouveau" className="text-sm transition-colors hover:opacity-70" style={{ color: 'var(--color-muted)' }}>
+                Créer un événement
+              </Link>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p
+                className="text-xs mb-1"
+                style={{ color: 'var(--color-teal)', fontFamily: 'var(--font-display)', letterSpacing: '0.1em' }}
+              >
+                MON COMPTE
+              </p>
+              <Link href="/auth/inscription" className="text-sm transition-colors hover:opacity-70" style={{ color: 'var(--color-text)' }}>
+                S&apos;inscrire
+              </Link>
+              <Link href="/auth/connexion" className="text-sm transition-colors hover:opacity-70" style={{ color: 'var(--color-muted)' }}>
+                Se connecter
+              </Link>
+              <Link href="/compte/reservations" className="text-sm transition-colors hover:opacity-70" style={{ color: 'var(--color-muted)' }}>
+                Mes réservations
+              </Link>
+            </div>
           </div>
         </div>
-        <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center text-xs gap-2">
+
+        {/* Bottom */}
+        <div
+          className="mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs"
+          style={{ borderTop: '1px solid rgba(247,243,238,0.08)', color: 'var(--color-muted)' }}
+        >
           <p>© 2026 CaribbeOne. Tous droits réservés.</p>
-          <div className="flex gap-4">
-            <Link href="/mentions-legales" className="hover:text-[#8ab5a7]">Mentions légales</Link>
-            <Link href="/cgu" className="hover:text-[#8ab5a7]">CGU</Link>
-            <Link href="/confidentialite" className="hover:text-[#8ab5a7]">Confidentialité</Link>
+          <div className="flex gap-6">
+            <Link href="/mentions-legales" className="hover:opacity-70 transition-opacity">Mentions légales</Link>
+            <Link href="/cgu" className="hover:opacity-70 transition-opacity">CGU</Link>
+            <Link href="/confidentialite" className="hover:opacity-70 transition-opacity">Confidentialité</Link>
           </div>
         </div>
       </div>
