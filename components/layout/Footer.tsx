@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Footer() {
@@ -7,7 +6,7 @@ export default function Footer() {
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 40, marginBottom: 40 }}>
           <div>
-            <Image src="/logo.jpg" alt="CaribbeOne" width={120} height={40} style={{ height: 40, width: 'auto', marginBottom: 12 }} />
+            <img src="/logo.jpg" alt="CaribbeOne" style={{ height: 44, width: 'auto', marginBottom: 12, display: 'block' }} />
             <p style={{ fontFamily: "'Caveat', cursive", fontSize: '1rem', color: '#9CBDB6', lineHeight: 1.5 }}>
               ain&apos;t nothin&apos; like caribean life !
             </p>

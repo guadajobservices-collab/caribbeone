@@ -75,3 +75,20 @@ body {
 .event-card img {
   transition: transform 0.4s ease;
 }
+
+/* Responsive fixes */
+.scroll-x {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  width: 100%;
+}
+.scroll-x::-webkit-scrollbar { display: none; }
+
+/* Responsive container */
+@media (max-width: 768px) {
+  .filter-pill {
+    font-size: 0.78rem;
+    padding: 6px 14px;
+  }
+}

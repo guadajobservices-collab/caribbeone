@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
@@ -29,7 +28,7 @@ export default function Header({ user }: HeaderProps) {
         
         {/* Logo */}
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Image src="/logo.jpg" alt="CaribbeOne" width={120} height={40} style={{ height: 40, width: 'auto', objectFit: 'contain' }} />
+          <img src="/logo.jpg" alt="CaribbeOne" style={{ height: 44, width: 'auto', objectFit: 'contain', display: 'block' }} />
         </Link>
 
         {/* Nav desktop */}

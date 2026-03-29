@@ -107,7 +107,7 @@ export default function HomePage() {
               <h3 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: '0.8rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>
                 PAR THÈME
               </h3>
-              <div className="scroll-x" style={{ display: 'flex', gap: 8, paddingBottom: 4 }}>
+              <div className="scroll-x" style={{ display: "flex", gap: 8, paddingBottom: 4, width: "100%" }}>
                 {THEMES.map(t => (
                   <span key={t} className="filter-pill">{t}</span>
                 ))}
@@ -119,7 +119,7 @@ export default function HomePage() {
               <h3 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: '0.8rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>
                 PAR ÎLE
               </h3>
-              <div className="scroll-x" style={{ display: 'flex', gap: 8, paddingBottom: 4 }}>
+              <div className="scroll-x" style={{ display: "flex", gap: 8, paddingBottom: 4, width: "100%" }}>
                 {ILES.map(i => (
                   <span key={i} className="filter-pill teal">{i}</span>
                 ))}
