@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Event } from '@/types'
-import { formatDateShort, islandLabel, categoryLabel } from '@/lib/utils'
+import { formatDateShort, islandLabel } from '@/lib/utils'
 
 interface EventCardProps {
   event: Event
@@ -13,15 +13,18 @@ export default function EventCard({ event, size = 'small' }: EventCardProps) {
     ? Math.min(...event.packages.map(p => p.price_cents))
     : null
 
-  const isGuadeloupe = event.island === 'guadeloupe'
-  const badgeColor = isGuadeloupe ? 'var(--color-teal)' : 'var(--color-accent)'
+  const priceLabel = minPrice !== null ? `dès ${(minPrice / 100).toFixed(0)}€` : 'Gratuit'
 
   if (size === 'large') {
     return (
       <Link
         href={`/evenements/${event.slug}`}
         className="group block relative overflow-hidden"
-        style={{ background: '#1A1A1A', aspectRatio: '16/9' }}
+        style={{
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: '0 4px 24px rgba(13,59,74,0.10)',
+          aspectRatio: '16/9',
+        }}
       >
         {event.cover_image_url ? (
           <Image
@@ -33,63 +36,68 @@ export default function EventCard({ event, size = 'small' }: EventCardProps) {
         ) : (
           <div
             className="absolute inset-0 flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #1A1A1A 0%, #2d4a44 100%)' }}
+            style={{ background: 'linear-gradient(135deg, var(--color-ocean) 0%, #1a5a6a 100%)' }}
           >
-            <span className="text-7xl opacity-30">🎵</span>
+            <span className="text-7xl opacity-40">🎵</span>
           </div>
         )}
         {/* Gradient overlay */}
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(to top, rgba(13,13,13,0.92) 0%, rgba(13,13,13,0.3) 50%, transparent 100%)' }}
+          style={{ background: 'linear-gradient(to top, rgba(13,59,74,0.92) 0%, rgba(13,59,74,0.2) 50%, transparent 100%)' }}
         />
-        {/* Teal hover overlay */}
-        <div className="event-card-overlay" />
+        {/* Hover sauge overlay */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+          style={{ background: 'var(--color-sauge)' }}
+        />
         {/* Badge île */}
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-4 right-4">
           <span
-            className="text-xs font-medium px-3 py-1"
+            className="text-xs font-semibold px-3 py-1.5 text-white"
             style={{
-              background: badgeColor,
-              color: 'var(--color-primary)',
-              fontFamily: 'var(--font-display)',
-              letterSpacing: '0.06em',
+              background: 'var(--color-sauge)',
+              borderRadius: 'var(--radius-xl)',
+              fontFamily: 'var(--font-body)',
             }}
           >
-            {islandLabel(event.island).toUpperCase()}
+            {islandLabel(event.island)}
           </span>
         </div>
-        {/* Prix */}
-        {minPrice !== null && (
-          <div className="absolute top-4 right-4">
-            <span
-              className="text-sm font-bold px-3 py-1"
-              style={{
-                background: 'var(--color-accent)',
-                color: '#fff',
-                fontFamily: 'var(--font-display)',
-                letterSpacing: '0.04em',
-              }}
-            >
-              dès {(minPrice / 100).toFixed(0)}€
-            </span>
-          </div>
-        )}
         {/* Content bottom */}
         <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
           <p
-            className="text-sm mb-1"
-            style={{ color: 'var(--color-teal)', fontFamily: 'var(--font-display)', letterSpacing: '0.08em' }}
+            className="text-sm font-semibold mb-1"
+            style={{ color: 'var(--color-corail)', fontFamily: 'var(--font-display)' }}
           >
-            {formatDateShort(event.starts_at).toUpperCase()} — {event.venue.toUpperCase()}
+            {formatDateShort(event.starts_at)}
           </p>
           <h3
-            className="text-2xl md:text-3xl font-bold leading-tight"
-            style={{ color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}
+            className="text-2xl md:text-3xl font-bold leading-tight text-white"
+            style={{ fontFamily: 'var(--font-display)' }}
           >
             {event.title}
           </h3>
+          <p className="text-sm mt-1" style={{ color: 'rgba(250,250,248,0.6)', fontFamily: 'var(--font-body)' }}>
+            {event.venue}
+          </p>
         </div>
+        {/* Prix */}
+        {minPrice !== null && (
+          <div className="absolute bottom-6 right-6 z-10">
+            <span
+              className="text-sm font-bold px-4 py-1.5"
+              style={{
+                background: 'var(--color-noir)',
+                color: 'var(--color-coco)',
+                borderRadius: 'var(--radius-xl)',
+                fontFamily: 'var(--font-display)',
+              }}
+            >
+              {priceLabel}
+            </span>
+          </div>
+        )}
       </Link>
     )
   }
@@ -98,19 +106,23 @@ export default function EventCard({ event, size = 'small' }: EventCardProps) {
     return (
       <Link
         href={`/evenements/${event.slug}`}
-        className="group flex items-center overflow-hidden border-t transition-all duration-300"
+        className="group flex items-center gap-4 p-3 transition-all duration-300"
         style={{
-          borderColor: 'rgba(247,243,238,0.08)',
-          padding: '1.25rem 0',
+          borderRadius: 'var(--radius-md)',
+          background: 'var(--color-coco)',
+          boxShadow: '0 2px 12px rgba(13,59,74,0.06)',
         }}
         onMouseEnter={e => {
-          (e.currentTarget as HTMLElement).style.borderColor = 'var(--color-teal)'
+          (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 20px rgba(13,59,74,0.12)'
         }}
         onMouseLeave={e => {
-          (e.currentTarget as HTMLElement).style.borderColor = 'rgba(247,243,238,0.08)'
+          (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px rgba(13,59,74,0.06)'
         }}
       >
-        <div className="relative w-24 h-16 flex-shrink-0 overflow-hidden">
+        <div
+          className="relative flex-shrink-0 overflow-hidden"
+          style={{ width: '80px', height: '60px', borderRadius: 'var(--radius-sm)' }}
+        >
           {event.cover_image_url ? (
             <Image
               src={event.cover_image_url}
@@ -119,38 +131,36 @@ export default function EventCard({ event, size = 'small' }: EventCardProps) {
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
-            <div style={{ background: '#1A1A1A', width: '100%', height: '100%' }} />
+            <div style={{ background: 'var(--color-ocean)', width: '100%', height: '100%' }} />
           )}
         </div>
-        <div className="flex-1 px-4">
+        <div className="flex-1 min-w-0">
           <p
-            className="text-xs mb-1"
-            style={{ color: 'var(--color-teal)', fontFamily: 'var(--font-display)', letterSpacing: '0.06em' }}
+            className="text-xs font-semibold mb-0.5"
+            style={{ color: 'var(--color-corail)', fontFamily: 'var(--font-display)' }}
           >
-            {formatDateShort(event.starts_at).toUpperCase()}
+            {formatDateShort(event.starts_at)}
           </p>
           <h3
-            className="font-semibold leading-tight"
-            style={{ color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}
+            className="font-semibold leading-tight truncate"
+            style={{ color: 'var(--color-noir)', fontFamily: 'var(--font-body)' }}
           >
             {event.title}
           </h3>
-          <p className="text-xs mt-0.5" style={{ color: 'var(--color-muted)' }}>
+          <p className="text-xs mt-0.5 truncate" style={{ color: 'var(--color-muted)' }}>
             {event.venue} · {islandLabel(event.island)}
           </p>
         </div>
-        <div className="flex-shrink-0 text-right pr-2">
+        <div className="flex-shrink-0 text-right">
           {minPrice !== null && (
             <span
               className="text-sm font-bold"
-              style={{ color: 'var(--color-accent)', fontFamily: 'var(--font-display)', letterSpacing: '0.04em' }}
+              style={{ color: 'var(--color-corail)', fontFamily: 'var(--font-display)' }}
             >
-              {(minPrice / 100).toFixed(0)}€
+              {priceLabel}
             </span>
           )}
-          <p className="text-xs mt-1" style={{ color: 'var(--color-muted)' }}>
-            →
-          </p>
+          <p className="text-xs mt-1" style={{ color: 'var(--color-muted)' }}>→</p>
         </div>
       </Link>
     )
@@ -160,10 +170,21 @@ export default function EventCard({ event, size = 'small' }: EventCardProps) {
   return (
     <Link
       href={`/evenements/${event.slug}`}
-      className="group block relative overflow-hidden"
-      style={{ background: '#111' }}
+      className="group block overflow-hidden bg-white"
+      style={{
+        borderRadius: 'var(--radius-lg)',
+        boxShadow: '0 4px 24px rgba(13,59,74,0.08)',
+      }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(13,59,74,0.14)'
+        ;(e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 24px rgba(13,59,74,0.08)'
+        ;(e.currentTarget as HTMLElement).style.transform = 'translateY(0)'
+      }}
     >
-      <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
+      <div className="relative overflow-hidden" style={{ aspectRatio: '16/9' }}>
         {event.cover_image_url ? (
           <Image
             src={event.cover_image_url}
@@ -174,56 +195,60 @@ export default function EventCard({ event, size = 'small' }: EventCardProps) {
         ) : (
           <div
             className="absolute inset-0 flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #1A1A1A 0%, #2d4a44 100%)' }}
+            style={{ background: 'linear-gradient(135deg, var(--color-ocean) 0%, #1a5a6a 100%)' }}
           >
-            <span className="text-5xl opacity-20">🎵</span>
+            <span className="text-5xl opacity-30">🎵</span>
           </div>
         )}
+        {/* Hover sauge overlay */}
         <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(to top, rgba(13,13,13,0.7) 0%, transparent 60%)' }}
+          className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+          style={{ background: 'var(--color-sauge)' }}
         />
-        {/* Teal hover */}
-        <div className="event-card-overlay" />
-        {/* Badge */}
-        <div className="absolute top-3 left-3">
-          <span
-            className="text-xs px-2 py-0.5"
-            style={{
-              background: badgeColor,
-              color: 'var(--color-primary)',
-              fontFamily: 'var(--font-display)',
-              letterSpacing: '0.05em',
-            }}
-          >
-            {islandLabel(event.island).toUpperCase()}
-          </span>
-        </div>
-      </div>
-      <div className="p-4">
-        <p
-          className="text-xs mb-1"
-          style={{ color: 'var(--color-teal)', fontFamily: 'var(--font-display)', letterSpacing: '0.07em' }}
+        {/* Badge île */}
+        <span
+          className="absolute top-3 right-3 text-xs font-semibold px-3 py-1 text-white"
+          style={{
+            borderRadius: 'var(--radius-xl)',
+            background: 'var(--color-sauge)',
+            fontFamily: 'var(--font-body)',
+          }}
         >
-          {formatDateShort(event.starts_at).toUpperCase()}
-        </p>
+          {islandLabel(event.island)}
+        </span>
+      </div>
+
+      <div className="p-5">
+        <div
+          className="text-sm font-semibold uppercase tracking-wide mb-1"
+          style={{ fontFamily: 'var(--font-display)', color: 'var(--color-corail)' }}
+        >
+          {formatDateShort(event.starts_at)}
+        </div>
         <h3
-          className="font-semibold text-base leading-tight mb-1 group-hover:opacity-80 transition-opacity"
-          style={{ color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}
+          className="text-xl font-bold mt-1 mb-2 leading-tight"
+          style={{ fontFamily: 'var(--font-display)', color: 'var(--color-noir)' }}
         >
           {event.title}
         </h3>
-        <p className="text-xs" style={{ color: 'var(--color-muted)' }}>
-          {event.venue}
-        </p>
-        {minPrice !== null && (
-          <p
-            className="text-sm font-bold mt-2"
-            style={{ color: 'var(--color-accent)', fontFamily: 'var(--font-display)', letterSpacing: '0.04em' }}
-          >
-            dès {(minPrice / 100).toFixed(0)}€
-          </p>
-        )}
+        <div className="flex justify-between items-center">
+          <span className="text-sm" style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}>
+            {event.venue}
+          </span>
+          {minPrice !== null && (
+            <span
+              className="px-4 py-1.5 text-sm font-semibold"
+              style={{
+                background: 'var(--color-noir)',
+                color: 'var(--color-coco)',
+                borderRadius: 'var(--radius-xl)',
+                fontFamily: 'var(--font-body)',
+              }}
+            >
+              {priceLabel}
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   )

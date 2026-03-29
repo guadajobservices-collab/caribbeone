@@ -4,6 +4,17 @@ import { getPublishedEvents } from '@/lib/db'
 import EventGrid from '@/components/events/EventGrid'
 import { Event, Package } from '@/types'
 
+const WaveDivider = ({ fill = '#FAFAF8', from = 'transparent' }: { fill?: string; from?: string }) => (
+  <svg
+    viewBox="0 0 1440 80"
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-full block"
+    style={{ background: from, display: 'block', marginBottom: '-1px' }}
+  >
+    <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill={fill} />
+  </svg>
+)
+
 export default async function HomePage() {
   let featuredEvents: (Event & { packages: Package[] })[] = []
   try {
@@ -14,485 +25,366 @@ export default async function HomePage() {
   }
 
   return (
-    <div style={{ background: 'var(--color-bg)' }}>
+    <div style={{ background: 'var(--color-coco)' }}>
 
       {/* ══════════════════════════════════════
-          HERO — Éditorial Festival
+          HERO — Fond ocean, organique
       ══════════════════════════════════════ */}
       <section
-        className="grain relative min-h-screen flex flex-col justify-end pb-16 md:pb-24 overflow-hidden"
-        style={{ background: 'var(--color-bg)', paddingTop: '6rem' }}
+        className="relative flex flex-col items-center justify-center text-center overflow-hidden"
+        style={{
+          background: 'var(--color-ocean)',
+          paddingTop: '8rem',
+          paddingBottom: '0',
+          minHeight: '92vh',
+        }}
       >
-        {/* Ligne verticale décorative */}
+        {/* Cercles décoratifs subtils */}
         <div
-          className="absolute left-8 md:left-16 top-32 bottom-16 hidden md:block"
-          style={{ width: '1px', background: 'rgba(91,168,160,0.3)' }}
+          className="absolute pointer-events-none"
+          style={{
+            width: '600px',
+            height: '600px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(42,191,191,0.08) 0%, transparent 70%)',
+            top: '-100px',
+            right: '-100px',
+          }}
+          aria-hidden="true"
+        />
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: '400px',
+            height: '400px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(224,117,96,0.06) 0%, transparent 70%)',
+            bottom: '80px',
+            left: '-80px',
+          }}
+          aria-hidden="true"
         />
 
-        <div className="max-w-7xl mx-auto px-4 md:px-8 w-full">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
-
-            {/* TITRE MASSIF */}
-            <div className="md:col-span-8 relative z-10">
-              {/* Label de section */}
-              <div className="flex items-center gap-3 mb-6">
-                <div style={{ width: '2rem', height: '1px', background: 'var(--color-teal)' }} />
-                <span
-                  className="text-xs tracking-widest"
-                  style={{
-                    color: 'var(--color-teal)',
-                    fontFamily: 'var(--font-display)',
-                    letterSpacing: '0.2em',
-                  }}
-                >
-                  BILLETTERIE INTER-ÎLES CARAÏBES
-                </span>
-              </div>
-
-              <h1
-                className="leading-none"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(4rem, 14vw, 13rem)',
-                  color: 'var(--color-text)',
-                  letterSpacing: '0.01em',
-                  lineHeight: 0.9,
-                }}
-              >
-                AIN&apos;T<br />
-                NOTHIN&apos;<br />
-                <span style={{ color: 'var(--color-teal)' }}>LIKE</span><br />
-                CARIBBEAN<br />
-                <span style={{ color: 'var(--color-accent)' }}>LIFE.</span>
-              </h1>
-
-              <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                <p style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)', fontSize: '0.9rem' }}>
-                  Guadeloupe · Martinique · Marie-Galante · Les Saintes
-                </p>
-                <Link
-                  href="/evenements"
-                  className="group flex items-center gap-3 transition-all"
-                  style={{
-                    background: 'var(--color-teal)',
-                    color: 'var(--color-primary)',
-                    padding: '0.875rem 2rem',
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '1rem',
-                    letterSpacing: '0.08em',
-                  }}
-                >
-                  EXPLORER LES ÉVÉNEMENTS
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
-                </Link>
-              </div>
-            </div>
-
-            {/* CARD ÉVÉNEMENT FLOTTANTE */}
-            <div className="md:col-span-4 relative z-10 hidden md:block">
-              {featuredEvents[0] ? (
-                <div
-                  className="relative overflow-hidden"
-                  style={{
-                    background: '#111',
-                    transform: 'rotate(1.5deg)',
-                    boxShadow: '0 24px 48px rgba(0,0,0,0.5)',
-                  }}
-                >
-                  <div className="relative" style={{ aspectRatio: '3/4' }}>
-                    {featuredEvents[0].cover_image_url ? (
-                      <Image
-                        src={featuredEvents[0].cover_image_url}
-                        alt={featuredEvents[0].title}
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div style={{ background: 'linear-gradient(135deg, #1A1A1A 0%, #2d4a44 100%)', width: '100%', height: '100%' }} />
-                    )}
-                    <div
-                      className="absolute inset-0"
-                      style={{ background: 'linear-gradient(to top, rgba(13,13,13,0.9) 0%, transparent 60%)' }}
-                    />
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <span
-                      className="text-xs px-2 py-0.5 mb-2 inline-block"
-                      style={{
-                        background: 'var(--color-accent)',
-                        color: '#fff',
-                        fontFamily: 'var(--font-display)',
-                        letterSpacing: '0.06em',
-                      }}
-                    >
-                      À VENIR
-                    </span>
-                    <h3
-                      className="text-lg font-bold leading-tight"
-                      style={{ color: 'var(--color-text)', fontFamily: 'var(--font-body)' }}
-                    >
-                      {featuredEvents[0].title}
-                    </h3>
-                    <p
-                      className="text-xs mt-1"
-                      style={{ color: 'var(--color-teal)', fontFamily: 'var(--font-display)', letterSpacing: '0.06em' }}
-                    >
-                      {featuredEvents[0].venue}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className="relative overflow-hidden flex items-center justify-center"
-                  style={{
-                    background: 'linear-gradient(135deg, #1A1A1A 0%, #2d4a44 100%)',
-                    aspectRatio: '3/4',
-                    transform: 'rotate(1.5deg)',
-                  }}
-                >
-                  <div className="text-center p-8">
-                    <p
-                      className="text-4xl mb-4"
-                      style={{ fontFamily: 'var(--font-display)', color: 'var(--color-teal)', letterSpacing: '0.08em' }}
-                    >
-                      SUMMER<br />2026
-                    </p>
-                    <p style={{ color: 'var(--color-muted)', fontSize: '0.85rem' }}>Événements à venir</p>
-                  </div>
-                </div>
-              )}
-            </div>
+        <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-8 pb-20">
+          {/* Logo */}
+          <div className="flex justify-center mb-8">
+            <Image
+              src="/logo.jpg"
+              alt="CaribbeOne"
+              width={80}
+              height={80}
+              className="object-cover"
+              style={{ borderRadius: '20px', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
+            />
           </div>
-        </div>
 
-        {/* Bande horizontale teal au bas de la section */}
-        <div
-          className="absolute bottom-0 left-0 right-0 flex items-center gap-8 px-4 md:px-8 overflow-hidden"
-          style={{ height: '44px', background: 'var(--color-teal)', zIndex: 2 }}
-        >
-          {Array.from({ length: 8 }).map((_, i) => (
-            <span
-              key={i}
-              className="flex-shrink-0 text-sm"
+          {/* Label */}
+          <p
+            className="text-sm font-semibold mb-4 tracking-widest uppercase"
+            style={{ color: 'var(--color-sauge)', fontFamily: 'var(--font-body)', letterSpacing: '0.15em' }}
+          >
+            Billetterie inter-îles Caraïbes
+          </p>
+
+          {/* H1 */}
+          <h1
+            className="font-bold leading-tight mb-4"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+              color: '#FAFAF8',
+              lineHeight: 1.1,
+            }}
+          >
+            La billetterie qui célèbre<br />
+            <span style={{ color: 'var(--color-sauge)' }}>la vie caribéenne</span>
+          </h1>
+
+          {/* Tagline Caveat */}
+          <p
+            className="mb-10 italic"
+            style={{
+              fontFamily: 'var(--font-script)',
+              fontSize: 'clamp(1.3rem, 3vw, 1.8rem)',
+              color: 'var(--color-sauge)',
+              opacity: 0.85,
+            }}
+          >
+            ain&apos;t nothin&apos; like caribbean life !
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/evenements"
+              className="inline-flex items-center gap-2 px-8 py-4 font-semibold text-base transition-all hover:opacity-90 hover:-translate-y-0.5"
               style={{
+                background: 'var(--color-corail)',
+                color: '#fff',
+                borderRadius: 'var(--radius-xl)',
                 fontFamily: 'var(--font-display)',
-                color: 'var(--color-primary)',
-                letterSpacing: '0.1em',
-                opacity: 0.7,
+                boxShadow: '0 4px 16px rgba(224,117,96,0.4)',
               }}
             >
-              ♪ CARIBBEONE
-            </span>
-          ))}
+              Voir les événements
+            </Link>
+            <Link
+              href="/organisateur"
+              className="inline-flex items-center gap-2 px-8 py-4 font-semibold text-base transition-all hover:bg-white hover:text-ocean"
+              style={{
+                border: '2px solid rgba(250,250,248,0.5)',
+                color: '#FAFAF8',
+                borderRadius: 'var(--radius-xl)',
+                fontFamily: 'var(--font-display)',
+              }}
+            >
+              Je suis organisateur
+            </Link>
+          </div>
+
+          {/* Îles label */}
+          <p
+            className="mt-10 text-sm"
+            style={{ color: 'rgba(250,250,248,0.4)', fontFamily: 'var(--font-body)' }}
+          >
+            Guadeloupe · Martinique · Marie-Galante · Les Saintes
+          </p>
+        </div>
+
+        {/* Vague de transition vers le fond clair */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <WaveDivider fill="var(--color-coco)" from="transparent" />
         </div>
       </section>
 
       {/* ══════════════════════════════════════
-          ÉVÉNEMENTS À VENIR
+          PROCHAINS ÉVÉNEMENTS
       ══════════════════════════════════════ */}
-      <section className="py-16 md:py-24" style={{ background: 'var(--color-bg)' }}>
+      <section className="py-16 md:py-24" style={{ background: 'var(--color-coco)' }}>
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="flex items-baseline justify-between mb-8 md:mb-12">
+          <div className="flex items-end justify-between mb-3">
             <h2
-              className="leading-none"
+              className="leading-tight"
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2.5rem, 7vw, 6rem)',
-                color: 'var(--color-text)',
-                letterSpacing: '0.02em',
+                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                color: 'var(--color-noir)',
               }}
             >
-              PROCHAINS<br />
-              <span style={{ color: 'var(--color-teal)' }}>ÉVÉNEMENTS</span>
+              Prochains{' '}
+              <span style={{ color: 'var(--color-turquoise)' }}>événements</span>
             </h2>
             <Link
               href="/evenements"
-              className="hidden md:flex items-center gap-2 text-sm transition-opacity hover:opacity-70"
-              style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-display)', letterSpacing: '0.06em' }}
+              className="hidden md:inline-flex items-center gap-1 text-sm font-medium transition-opacity hover:opacity-70"
+              style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}
             >
-              TOUT VOIR →
+              Tout voir →
             </Link>
           </div>
+          <p
+            className="mb-10"
+            style={{
+              fontFamily: 'var(--font-script)',
+              fontSize: '1.2rem',
+              color: 'var(--color-sauge)',
+            }}
+          >
+            Les plus belles soirées de l&apos;archipel
+          </p>
 
           <EventGrid events={featuredEvents} />
 
           <div className="mt-8 md:hidden text-center">
             <Link
               href="/evenements"
-              className="inline-block px-8 py-3 text-sm"
+              className="inline-flex items-center gap-2 px-8 py-3 text-sm font-semibold transition-opacity hover:opacity-80"
               style={{
-                border: '1px solid var(--color-teal)',
-                color: 'var(--color-teal)',
+                border: '2px solid var(--color-turquoise)',
+                color: 'var(--color-turquoise)',
+                borderRadius: 'var(--radius-xl)',
                 fontFamily: 'var(--font-display)',
-                letterSpacing: '0.08em',
               }}
             >
-              VOIR TOUS LES ÉVÉNEMENTS →
+              Voir tous les événements
             </Link>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════
-          PACK ÎLES — Fond crème avec diagonale
+          PACKAGES ÎLES — Fond sable
       ══════════════════════════════════════ */}
-      <section
-        id="about"
-        className="relative py-24 md:py-32"
-        style={{
-          background: 'var(--color-bg-light)',
-          clipPath: 'polygon(0 4%, 100% 0, 100% 96%, 0 100%)',
-          marginTop: '-3rem',
-          marginBottom: '-3rem',
-          paddingTop: '8rem',
-          paddingBottom: '8rem',
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          {/* Header asymétrique */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div style={{ width: '2rem', height: '1px', background: 'var(--color-accent)' }} />
-                <span
-                  className="text-xs tracking-widest"
-                  style={{
-                    color: 'var(--color-accent)',
-                    fontFamily: 'var(--font-display)',
-                    letterSpacing: '0.2em',
-                  }}
-                >
-                  PACKS INTER-ÎLES
-                </span>
-              </div>
+      <div>
+        <WaveDivider fill="var(--color-sable)" from="var(--color-coco)" />
+        <section
+          id="about"
+          className="py-16 md:py-24"
+          style={{ background: 'var(--color-sable)', marginTop: '-1px' }}
+        >
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            <div className="mb-12">
               <h2
-                className="leading-none"
+                className="leading-tight mb-2"
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-                  color: 'var(--color-text-dark)',
-                  letterSpacing: '0.02em',
+                  fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                  color: 'var(--color-noir)',
                 }}
               >
-                LE VOYAGE<br />
-                <span style={{ color: 'var(--color-teal)' }}>INCLUS.</span>
+                Voyager &amp; Célébrer
               </h2>
-            </div>
-            <div className="flex items-end">
-              <p style={{ color: 'var(--color-text-dark)', opacity: 0.65, fontFamily: 'var(--font-body)', lineHeight: 1.7 }}>
-                Un seul achat pour l&apos;événement, la traversée en ferry et l&apos;hébergement.
-                Guadeloupe, Martinique, Marie-Galante — on s&apos;occupe de tout.
+              <p
+                style={{
+                  fontFamily: 'var(--font-script)',
+                  fontSize: '1.3rem',
+                  color: 'var(--color-corail)',
+                }}
+              >
+                Des packs complets ferry + billet + hébergement
               </p>
             </div>
-          </div>
 
-          {/* 3 packs — formats asymétriques */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-            {/* Pack 1 — grand, accent */}
-            <div
-              className="md:col-span-5 p-8 flex flex-col justify-between"
-              style={{
-                background: 'var(--color-text-dark)',
-                color: 'var(--color-text)',
-                minHeight: '320px',
-              }}
-            >
-              <div>
-                <span
-                  className="text-xs tracking-widest mb-4 block"
-                  style={{ color: 'var(--color-accent)', fontFamily: 'var(--font-display)', letterSpacing: '0.15em' }}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: '🌊',
+                  label: 'Ferry',
+                  title: 'Traversée incluse',
+                  desc: "Réservez votre billet et la traversée maritime en un seul achat. Aller-retour, simple et sécurisé.",
+                  color: 'var(--color-turquoise)',
+                },
+                {
+                  icon: '🏨',
+                  label: 'Hébergement',
+                  title: 'Séjour sur l\'île',
+                  desc: "Nuit(s) d'hôtel sur l'île de l'événement. Réveils sans stress, profitez de chaque moment.",
+                  color: 'var(--color-sauge)',
+                },
+                {
+                  icon: '🎟️',
+                  label: 'Billet',
+                  title: 'Entrée garantie',
+                  desc: "Votre e-billet sécurisé, envoyé instantanément. QR code scannable à l'entrée, sans file d'attente.",
+                  color: 'var(--color-corail)',
+                },
+              ].map(({ icon, label, title, desc, color }) => (
+                <div
+                  key={label}
+                  className="flex flex-col gap-4 p-7 bg-white"
+                  style={{
+                    borderRadius: 'var(--radius-lg)',
+                    boxShadow: '0 4px 24px rgba(13,59,74,0.06)',
+                  }}
                 >
-                  PACK ESSENTIEL
-                </span>
-                <h3
-                  className="text-3xl leading-tight mb-3"
-                  style={{ fontFamily: 'var(--font-display)', letterSpacing: '0.04em' }}
-                >
-                  BILLET +<br />FERRY
-                </h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'rgba(247,243,238,0.6)' }}>
-                  L&apos;entrée à l&apos;événement et la traversée maritime aller-retour. Simple et efficace.
-                </p>
-              </div>
-              <Link
-                href="/evenements"
-                className="inline-flex items-center gap-2 text-sm mt-6"
-                style={{ color: 'var(--color-teal)', fontFamily: 'var(--font-display)', letterSpacing: '0.06em' }}
-              >
-                EXPLORER →
-              </Link>
+                  <div
+                    className="w-14 h-14 flex items-center justify-center text-2xl"
+                    style={{ borderRadius: 'var(--radius-md)', background: `${color}22` }}
+                  >
+                    {icon}
+                  </div>
+                  <div>
+                    <p
+                      className="text-xs font-semibold mb-1 uppercase tracking-wide"
+                      style={{ color, fontFamily: 'var(--font-display)' }}
+                    >
+                      {label}
+                    </p>
+                    <h3
+                      className="text-xl font-bold mb-2"
+                      style={{ fontFamily: 'var(--font-display)', color: 'var(--color-noir)' }}
+                    >
+                      {title}
+                    </h3>
+                    <p
+                      className="text-sm leading-relaxed"
+                      style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}
+                    >
+                      {desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
 
-            {/* Pack 2 — teal, médium */}
-            <div
-              className="md:col-span-4 p-8 flex flex-col justify-between"
-              style={{
-                background: 'var(--color-teal)',
-                color: 'var(--color-primary)',
-                minHeight: '280px',
-              }}
-            >
-              <div>
-                <span
-                  className="text-xs tracking-widest mb-4 block"
-                  style={{ fontFamily: 'var(--font-display)', letterSpacing: '0.15em', opacity: 0.7 }}
-                >
-                  PACK SÉJOUR
-                </span>
-                <h3
-                  className="text-3xl leading-tight mb-3"
-                  style={{ fontFamily: 'var(--font-display)', letterSpacing: '0.04em' }}
-                >
-                  TOUT<br />INCLUS
-                </h3>
-                <p className="text-sm leading-relaxed" style={{ opacity: 0.75 }}>
-                  Ferry + billet + hébergement sur l&apos;île. Profitez sans vous soucier de rien.
-                </p>
-              </div>
+            <div className="mt-10 text-center">
               <Link
                 href="/evenements"
-                className="inline-flex items-center gap-2 text-sm mt-6"
-                style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-display)', letterSpacing: '0.06em' }}
+                className="inline-flex items-center gap-2 px-8 py-4 font-semibold transition-all hover:opacity-90 hover:-translate-y-0.5"
+                style={{
+                  background: 'var(--color-ocean)',
+                  color: '#fff',
+                  borderRadius: 'var(--radius-xl)',
+                  fontFamily: 'var(--font-display)',
+                  boxShadow: '0 4px 16px rgba(13,59,74,0.2)',
+                }}
               >
-                DÉCOUVRIR →
-              </Link>
-            </div>
-
-            {/* Pack 3 — crème avec border, petit */}
-            <div
-              className="md:col-span-3 p-6 flex flex-col justify-between"
-              style={{
-                border: '2px solid var(--color-text-dark)',
-                background: 'transparent',
-                color: 'var(--color-text-dark)',
-                minHeight: '240px',
-              }}
-            >
-              <div>
-                <span
-                  className="text-xs tracking-widest mb-4 block"
-                  style={{ color: 'var(--color-accent)', fontFamily: 'var(--font-display)', letterSpacing: '0.15em' }}
-                >
-                  PACK DIASPORA
-                </span>
-                <h3
-                  className="text-2xl leading-tight mb-3"
-                  style={{ fontFamily: 'var(--font-display)', letterSpacing: '0.04em' }}
-                >
-                  VOL +<br />SÉJOUR
-                </h3>
-                <p className="text-sm leading-relaxed" style={{ opacity: 0.65 }}>
-                  Depuis la Métropole. Vol inclus.
-                </p>
-              </div>
-              <Link
-                href="/evenements"
-                className="inline-flex items-center gap-2 text-sm mt-4"
-                style={{ color: 'var(--color-accent)', fontFamily: 'var(--font-display)', letterSpacing: '0.06em' }}
-              >
-                EN SAVOIR + →
+                Découvrir les packs →
               </Link>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+        <WaveDivider fill="var(--color-noir)" from="var(--color-sable)" />
+      </div>
 
       {/* ══════════════════════════════════════
-          CTA ORGANISATEURS — Fond teal
+          CTA ORGANISATEURS
       ══════════════════════════════════════ */}
       <section
         className="py-20 md:py-28 relative overflow-hidden"
-        style={{ background: 'var(--color-teal)', marginTop: '3rem' }}
+        style={{ background: 'var(--color-noir)', marginTop: '-1px' }}
       >
-        {/* Typo décorative en arrière-plan */}
+        {/* Cercle déco */}
         <div
-          className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"
+          className="absolute pointer-events-none"
+          style={{
+            width: '500px',
+            height: '500px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(156,189,182,0.07) 0%, transparent 70%)',
+            top: '-100px',
+            right: '-50px',
+          }}
           aria-hidden="true"
-        >
-          <span
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(8rem, 25vw, 22rem)',
-              color: 'rgba(13,13,13,0.07)',
-              letterSpacing: '-0.02em',
-              whiteSpace: 'nowrap',
-              userSelect: 'none',
-            }}
-          >
-            ORGANISEZ
-          </span>
-        </div>
+        />
 
         <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-          <div className="max-w-3xl">
+          <div className="max-w-2xl">
             <h2
-              className="leading-none mb-6"
+              className="leading-tight mb-4"
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(3rem, 8vw, 7rem)',
-                color: 'var(--color-primary)',
-                letterSpacing: '0.01em',
+                fontSize: 'clamp(2.2rem, 5.5vw, 4rem)',
+                color: '#FAFAF8',
               }}
             >
-              VOUS ORGANISEZ<br />UN ÉVÉNEMENT ?
+              Vous organisez<br />
+              <span style={{ color: 'var(--color-sauge)' }}>un événement ?</span>
             </h2>
             <p
-              className="text-base md:text-lg mb-10 max-w-xl"
-              style={{ color: 'rgba(26,26,26,0.7)', fontFamily: 'var(--font-body)', lineHeight: 1.7 }}
+              className="text-base mb-8 leading-relaxed"
+              style={{
+                color: 'rgba(250,250,248,0.6)',
+                fontFamily: 'var(--font-body)',
+                maxWidth: '480px',
+              }}
             >
-              Publiez vos événements, gérez vos packs inter-îles et recevez vos paiements en autonomie. Diaspora, ferry, hébergement — tout configuré en quelques clics.
+              Publiez vos événements, gérez vos packs inter-îles et recevez vos paiements en autonomie.
+              Diaspora, ferry, hébergement — tout configuré en quelques clics.
             </p>
             <Link
               href="/organisateur"
-              className="inline-flex items-center gap-3 px-8 py-4 transition-opacity hover:opacity-90"
+              className="inline-flex items-center gap-2 px-8 py-4 font-semibold transition-all hover:opacity-90 hover:-translate-y-0.5"
               style={{
-                background: 'var(--color-primary)',
-                color: 'var(--color-text)',
+                background: 'var(--color-sauge)',
+                color: 'var(--color-noir)',
+                borderRadius: 'var(--radius-xl)',
                 fontFamily: 'var(--font-display)',
-                fontSize: '1.1rem',
-                letterSpacing: '0.08em',
+                fontSize: '1rem',
               }}
             >
-              ACCÉDER AU BACK-OFFICE →
+              Accéder au back-office →
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════
-          STATS BANDE
-      ══════════════════════════════════════ */}
-      <section
-        className="py-10"
-        style={{ background: 'var(--color-primary)', borderTop: '1px solid rgba(247,243,238,0.06)' }}
-      >
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="grid grid-cols-3 gap-4 md:gap-8">
-            {[
-              { value: '4', label: 'ÎLES COUVERTES' },
-              { value: '100%', label: 'SÉCURISÉ STRIPE' },
-              { value: 'E-BILLET', label: 'INSTANTANÉ' },
-            ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <p
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-                    color: 'var(--color-teal)',
-                    letterSpacing: '0.04em',
-                    lineHeight: 1,
-                  }}
-                >
-                  {stat.value}
-                </p>
-                <p
-                  className="text-xs mt-1"
-                  style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-display)', letterSpacing: '0.12em' }}
-                >
-                  {stat.label}
-                </p>
-              </div>
-            ))}
           </div>
         </div>
       </section>

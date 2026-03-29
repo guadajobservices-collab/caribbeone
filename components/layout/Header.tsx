@@ -27,9 +27,10 @@ export default function Header({ user }: { user: { email?: string; role?: string
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        background: scrolled ? 'rgba(13,13,13,0.97)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(91,168,160,0.15)' : '1px solid transparent',
+        background: scrolled ? 'rgba(250,250,248,0.97)' : 'rgba(250,250,248,0.95)',
+        backdropFilter: 'blur(12px)',
+        boxShadow: scrolled ? '0 2px 20px rgba(13,59,74,0.08)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(156,189,182,0.2)' : '1px solid transparent',
       }}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
@@ -38,74 +39,65 @@ export default function Header({ user }: { user: { email?: string; role?: string
           <Image
             src="/logo.jpg"
             alt="CaribbeOne"
-            width={40}
-            height={40}
+            width={48}
+            height={48}
             className="object-cover"
-            style={{ borderRadius: 0 }}
+            style={{ borderRadius: '12px' }}
           />
         </Link>
 
-        {/* Desktop Nav — centré */}
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
-          <Link
-            href="/evenements"
-            className="text-sm font-medium transition-colors"
-            style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-muted)')}
-          >
-            Événements
-          </Link>
-          <Link
-            href="/organisateur"
-            className="text-sm font-medium transition-colors"
-            style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-muted)')}
-          >
-            Organisateurs
-          </Link>
-          <Link
-            href="/#about"
-            className="text-sm font-medium transition-colors"
-            style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-muted)')}
-          >
-            À propos
-          </Link>
+          {[
+            { href: '/evenements', label: 'Événements' },
+            { href: '/organisateur', label: 'Organisateurs' },
+            { href: '/#about', label: 'À propos' },
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="text-sm font-medium transition-colors hover:opacity-70"
+              style={{
+                color: 'var(--color-noir)',
+                fontFamily: 'var(--font-body)',
+                fontWeight: 500,
+              }}
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
 
         {/* Right actions */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-3">
           {user ? (
             <>
               {(user.role === 'organizer' || user.role === 'admin') && (
                 <Link
                   href="/organisateur/evenements/nouveau"
-                  className="px-5 py-2 text-sm font-medium transition-colors"
+                  className="px-5 py-2 text-sm font-semibold transition-opacity hover:opacity-90"
                   style={{
-                    background: 'var(--color-teal)',
-                    color: 'var(--color-primary)',
+                    background: 'var(--color-corail)',
+                    color: '#fff',
                     fontFamily: 'var(--font-display)',
+                    borderRadius: 'var(--radius-xl)',
                     fontSize: '0.9rem',
-                    letterSpacing: '0.05em',
                   }}
                 >
-                  CRÉER UN ÉVÉNEMENT
+                  Créer un événement
                 </Link>
               )}
               <Link
                 href="/compte"
-                className="text-sm transition-colors"
-                style={{ color: 'var(--color-muted)' }}
+                className="text-sm transition-colors hover:opacity-70"
+                style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}
               >
                 Mon compte
               </Link>
               <button
                 onClick={handleLogout}
-                className="text-sm transition-colors"
-                style={{ color: 'var(--color-muted)' }}
+                className="text-sm transition-colors hover:opacity-70"
+                style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}
               >
                 Déconnexion
               </button>
@@ -114,23 +106,23 @@ export default function Header({ user }: { user: { email?: string; role?: string
             <>
               <Link
                 href="/auth/connexion"
-                className="text-sm font-medium transition-colors"
-                style={{ color: 'var(--color-muted)' }}
+                className="text-sm font-medium transition-colors hover:opacity-70"
+                style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}
               >
                 Connexion
               </Link>
               <Link
                 href="/organisateur/evenements/nouveau"
-                className="px-5 py-2 text-sm font-medium"
+                className="px-5 py-2 text-sm font-semibold transition-opacity hover:opacity-90"
                 style={{
-                  background: 'var(--color-teal)',
-                  color: 'var(--color-primary)',
+                  background: 'var(--color-corail)',
+                  color: '#fff',
                   fontFamily: 'var(--font-display)',
+                  borderRadius: 'var(--radius-xl)',
                   fontSize: '0.9rem',
-                  letterSpacing: '0.05em',
                 }}
               >
-                CRÉER UN ÉVÉNEMENT
+                Créer un événement
               </Link>
             </>
           )}
@@ -139,7 +131,7 @@ export default function Header({ user }: { user: { email?: string; role?: string
         {/* Mobile hamburger */}
         <button
           className="md:hidden p-2"
-          style={{ color: 'var(--color-text)' }}
+          style={{ color: 'var(--color-noir)' }}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
@@ -158,34 +150,26 @@ export default function Header({ user }: { user: { email?: string; role?: string
         <div
           className="md:hidden px-4 py-6 flex flex-col gap-4"
           style={{
-            background: 'rgba(13,13,13,0.98)',
-            borderTop: '1px solid rgba(91,168,160,0.2)',
+            background: 'rgba(250,250,248,0.99)',
+            borderTop: '1px solid rgba(156,189,182,0.3)',
           }}
         >
-          <Link
-            href="/evenements"
-            className="text-base font-medium py-2 border-b"
-            style={{ color: 'var(--color-text)', borderColor: 'rgba(255,255,255,0.06)' }}
-            onClick={() => setMenuOpen(false)}
-          >
-            Événements
-          </Link>
-          <Link
-            href="/organisateur"
-            className="text-base font-medium py-2 border-b"
-            style={{ color: 'var(--color-text)', borderColor: 'rgba(255,255,255,0.06)' }}
-            onClick={() => setMenuOpen(false)}
-          >
-            Organisateurs
-          </Link>
-          <Link
-            href="/#about"
-            className="text-base font-medium py-2 border-b"
-            style={{ color: 'var(--color-text)', borderColor: 'rgba(255,255,255,0.06)' }}
-            onClick={() => setMenuOpen(false)}
-          >
-            À propos
-          </Link>
+          {[
+            { href: '/evenements', label: 'Événements' },
+            { href: '/organisateur', label: 'Organisateurs' },
+            { href: '/#about', label: 'À propos' },
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="text-base font-medium py-2 border-b"
+              style={{ color: 'var(--color-noir)', borderColor: 'rgba(13,59,74,0.08)' }}
+              onClick={() => setMenuOpen(false)}
+            >
+              {label}
+            </Link>
+          ))}
+
           {user ? (
             <>
               <Link
@@ -205,29 +189,28 @@ export default function Header({ user }: { user: { email?: string; role?: string
               </button>
             </>
           ) : (
-            <>
-              <Link
-                href="/auth/connexion"
-                className="text-base py-2"
-                style={{ color: 'var(--color-muted)' }}
-                onClick={() => setMenuOpen(false)}
-              >
-                Connexion
-              </Link>
-            </>
+            <Link
+              href="/auth/connexion"
+              className="text-base py-2"
+              style={{ color: 'var(--color-muted)' }}
+              onClick={() => setMenuOpen(false)}
+            >
+              Connexion
+            </Link>
           )}
+
           <Link
             href="/organisateur/evenements/nouveau"
-            className="mt-2 py-3 text-center text-base font-medium"
+            className="mt-2 py-3 text-center text-base font-semibold transition-opacity hover:opacity-90"
             style={{
-              background: 'var(--color-teal)',
-              color: 'var(--color-primary)',
+              background: 'var(--color-corail)',
+              color: '#fff',
               fontFamily: 'var(--font-display)',
-              letterSpacing: '0.05em',
+              borderRadius: 'var(--radius-xl)',
             }}
             onClick={() => setMenuOpen(false)}
           >
-            CRÉER UN ÉVÉNEMENT
+            Créer un événement
           </Link>
         </div>
       )}
