@@ -1,37 +1,58 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
-import { getProfile } from '@/lib/db'
+'use client'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
-export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/auth/connexion')
+const NAV = [
+  { href: '/admin', label: 'Tableau de bord', icon: '📊' },
+  { href: '/admin/evenements', label: 'Événements', icon: '🎪' },
+  { href: '/admin/reservations', label: 'Réservations', icon: '🎟️' },
+  { href: '/admin/blog', label: 'Blog', icon: '✍️' },
+  { href: '/admin/pages', label: 'Pages', icon: '📄' },
+  { href: '/admin/medias', label: 'Médias', icon: '🖼️' },
+]
 
-  const profile = await getProfile(user.id).catch(() => null)
-  if (!profile || profile.role !== 'admin') redirect('/')
+const FF_DISPLAY = '"Baloo 2", cursive'
+const FF_BODY = '"Nunito", sans-serif'
 
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="flex gap-8">
-        <aside className="hidden md:block w-52 flex-shrink-0">
-          <div className="mb-4">
-            <p className="text-xs font-bold text-red-500 uppercase tracking-wider mb-2">Admin</p>
-          </div>
-          <nav className="space-y-1">
-            {[
-              { href: '/admin', label: '📊 Dashboard' },
-              { href: '/admin/evenements', label: '🎪 Modération' },
-            ].map(item => (
-              <Link key={item.href} href={item.href}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-[#1a1a1a] transition-colors">
-                {item.label}
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#F8F9FA' }}>
+      <aside style={{ width: 240, background: '#0D3B4A', color: '#FFFFFF', flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ padding: '24px 20px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ fontFamily: FF_DISPLAY, fontWeight: 800, fontSize: '1.2rem', color: '#9CBDB6' }}>CaribbeOne</div>
+          <div style={{ fontFamily: FF_BODY, fontSize: '0.75rem', color: 'rgba(155,189,182,0.7)', marginTop: 4 }}>Administration</div>
+        </div>
+        <nav style={{ padding: '16px 0', flex: 1 }}>
+          {NAV.map(({ href, label, icon }) => {
+            const active = pathname === href || (href !== '/admin' && pathname.startsWith(href))
+            return (
+              <Link key={href} href={href} style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                padding: '12px 20px',
+                background: active ? 'rgba(155,189,182,0.2)' : 'transparent',
+                borderLeft: active ? '3px solid #9CBDB6' : '3px solid transparent',
+                color: active ? '#9CBDB6' : 'rgba(255,255,255,0.75)',
+                textDecoration: 'none',
+                fontFamily: FF_BODY, fontWeight: active ? 700 : 500,
+                fontSize: '0.92rem',
+                transition: 'all 0.15s',
+              }}>
+                <span>{icon}</span>
+                <span>{label}</span>
               </Link>
-            ))}
-          </nav>
-        </aside>
-        <div className="flex-1 min-w-0">{children}</div>
-      </div>
+            )
+          })}
+        </nav>
+        <div style={{ padding: '16px 20px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <Link href="/" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.82rem', textDecoration: 'none', fontFamily: FF_BODY }}>
+            ← Voir le site
+          </Link>
+        </div>
+      </aside>
+      <main style={{ flex: 1, overflow: 'auto' }}>
+        {children}
+      </main>
     </div>
   )
 }

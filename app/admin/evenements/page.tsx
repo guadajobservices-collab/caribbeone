@@ -1,46 +1,81 @@
-import { db } from '@/lib/db'
-import { formatDateShort } from '@/lib/utils'
-import AdminEventActions from '@/components/admin/AdminEventActions'
+import { createAdminClient } from '@/lib/supabase/server'
+import Link from 'next/link'
 
-export const metadata = { title: 'Modération — CaribbeOne Admin' }
+export const metadata = { title: 'Événements — Admin CaribbeOne' }
 
-export default async function AdminEvenementsPage() {
-  const events = await db`
-    SELECT e.*, p.first_name, p.last_name, p.email
-    FROM events e
-    LEFT JOIN profiles p ON p.id = e.organizer_id
-    ORDER BY e.created_at DESC
-  `.catch(() => []) as {
-    id: string; title: string; slug: string; island: string; status: string;
-    starts_at: string; first_name: string; last_name: string; email: string
-  }[]
+const FF_DISPLAY = '"Baloo 2", cursive'
+const FF_BODY = '"Nunito", sans-serif'
+
+export default async function AdminEvents() {
+  const supabase = createAdminClient()
+  const { data: events } = await supabase
+    .from('events')
+    .select('*, islands(name), event_categories(name)')
+    .order('created_at', { ascending: false })
 
   return (
-    <div>
-      <h1 className="text-2xl font-black text-[#1a1a1a] mb-6">Modération des événements</h1>
-      <div className="space-y-3">
-        {events.map(event => (
-          <div key={event.id} className="border border-gray-100 rounded-2xl p-4">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
-                    event.status === 'published' ? 'bg-green-100 text-green-700' :
-                    event.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                    event.status === 'draft' ? 'bg-gray-100 text-gray-600' : 'bg-red-100 text-red-700'
-                  }`}>{event.status}</span>
-                </div>
-                <h3 className="font-bold text-[#1a1a1a]">{event.title}</h3>
-                <p className="text-xs text-gray-400 mt-0.5">
-                  {formatDateShort(event.starts_at)} · {event.island} ·
-                  Organisateur : {event.first_name} {event.last_name} ({event.email})
-                </p>
-              </div>
-              <AdminEventActions eventId={event.id} currentStatus={event.status} />
-            </div>
-          </div>
-        ))}
-        {events.length === 0 && <p className="text-gray-400 text-center py-8">Aucun événement.</p>}
+    <div style={{ padding: '32px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+        <h1 style={{ fontFamily: FF_DISPLAY, fontWeight: 800, fontSize: '1.8rem', color: '#1A1A1A' }}>
+          Événements
+        </h1>
+        <Link href="/admin/evenements/nouveau" style={{
+          background: '#E07560', color: '#FFFFFF',
+          padding: '10px 24px', borderRadius: 40,
+          fontFamily: FF_DISPLAY, fontWeight: 700,
+          textDecoration: 'none', fontSize: '0.95rem',
+        }}>
+          + Nouvel événement
+        </Link>
+      </div>
+
+      <div style={{ background: '#FFFFFF', borderRadius: 16, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', overflow: 'hidden' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: '#F8F9FA' }}>
+              {['Titre', 'Île', 'Catégorie', 'Date', 'Statut', 'Actions'].map(h => (
+                <th key={h} style={{ fontFamily: FF_BODY, fontWeight: 700, fontSize: '0.82rem', color: '#6B7280', textAlign: 'left', padding: '14px 16px', textTransform: 'uppercase' as const, letterSpacing: 0.5 }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {(events ?? []).map((e: Record<string, unknown>) => {
+              const island = e.islands as Record<string, unknown> | null
+              const category = e.event_categories as Record<string, unknown> | null
+              return (
+                <tr key={e.id as string} style={{ borderTop: '1px solid #F0F0F0' }}>
+                  <td style={{ padding: '14px 16px', fontFamily: FF_BODY, fontWeight: 700, color: '#1A1A1A' }}>
+                    {e.cover_image ? <img src={e.cover_image as string} style={{ width: 40, height: 30, objectFit: 'cover', borderRadius: 4, marginRight: 10, verticalAlign: 'middle' }} alt="" /> : null}
+                    {e.title as string}
+                  </td>
+                  <td style={{ padding: '14px 16px', fontFamily: FF_BODY, fontSize: '0.88rem' }}>{(island?.name as string) || '—'}</td>
+                  <td style={{ padding: '14px 16px', fontFamily: FF_BODY, fontSize: '0.88rem' }}>{(category?.name as string) || '—'}</td>
+                  <td style={{ padding: '14px 16px', fontFamily: FF_BODY, fontSize: '0.88rem', color: '#6B7280' }}>
+                    {e.start_date ? new Date(e.start_date as string).toLocaleDateString('fr-FR') : '—'}
+                  </td>
+                  <td style={{ padding: '14px 16px' }}>
+                    <span style={{
+                      background: e.status === 'published' ? '#dcfce7' : e.status === 'draft' ? '#f3f4f6' : '#fee2e2',
+                      color: e.status === 'published' ? '#166534' : e.status === 'draft' ? '#374151' : '#991b1b',
+                      padding: '3px 10px', borderRadius: 999, fontSize: '0.78rem', fontWeight: 700, fontFamily: FF_BODY,
+                    }}>
+                      {e.status as string}
+                    </span>
+                  </td>
+                  <td style={{ padding: '14px 16px' }}>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <Link href={`/admin/evenements/${e.id as string}`} style={{ background: '#0D3B4A', color: '#FFFFFF', padding: '5px 12px', borderRadius: 8, fontSize: '0.8rem', textDecoration: 'none', fontFamily: FF_BODY, fontWeight: 600 }}>Éditer</Link>
+                      <Link href={`/admin/evenements/${e.id as string}/packs`} style={{ background: '#9CBDB6', color: '#FFFFFF', padding: '5px 12px', borderRadius: 8, fontSize: '0.8rem', textDecoration: 'none', fontFamily: FF_BODY, fontWeight: 600 }}>Packs</Link>
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
+            {(!events || events.length === 0) && (
+              <tr><td colSpan={6} style={{ padding: '40px', textAlign: 'center', color: '#6B7280', fontFamily: FF_BODY }}>Aucun événement. <Link href="/admin/evenements/nouveau" style={{ color: '#E07560' }}>Créer le premier →</Link></td></tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   )
