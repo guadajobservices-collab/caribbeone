@@ -28,7 +28,7 @@ export default function Header({ user }: HeaderProps) {
         
         {/* Logo */}
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <img src="/logo.png" alt="CaribbeOne" style={{ height: 44, width: 'auto', objectFit: 'contain', display: 'block' }} />
+          <img src="/logo.png" alt="CaribbeOne" style={{ height: 72, width: "auto", objectFit: "contain", display: "block" }} />
         </Link>
 
         {/* Nav desktop */}
