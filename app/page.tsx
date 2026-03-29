@@ -179,8 +179,6 @@ export default function HomePage() {
                         src={event.img}
                         alt={event.title}
                         style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s' }}
-                        onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.05)')}
-                        onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
                       />
                       {/* Badge île */}
                       <span style={{
