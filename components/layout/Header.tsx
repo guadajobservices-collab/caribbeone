@@ -51,15 +51,6 @@ export default function Header({ user }: HeaderProps) {
               Connexion
             </Link>
           )}
-          <Link href="/organisateur/evenements/nouveau" style={{
-            background: '#E07560', color: '#FFFFFF',
-            padding: '10px 20px', borderRadius: 40,
-            fontFamily: "'Baloo 2', cursive", fontWeight: 700,
-            fontSize: '0.9rem', textDecoration: 'none',
-            whiteSpace: 'nowrap',
-          }}>
-            Créer un événement
-          </Link>
         </div>
       </div>
     </header>
