@@ -1,394 +1,294 @@
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 import Link from 'next/link'
-import Image from 'next/image'
-import { getPublishedEvents } from '@/lib/db'
-import EventGrid from '@/components/events/EventGrid'
-import { Event, Package } from '@/types'
 
-const WaveDivider = ({ fill = '#FAFAF8', from = 'transparent' }: { fill?: string; from?: string }) => (
-  <svg
-    viewBox="0 0 1440 80"
-    xmlns="http://www.w3.org/2000/svg"
-    className="w-full block"
-    style={{ background: from, display: 'block', marginBottom: '-1px' }}
-  >
-    <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill={fill} />
-  </svg>
-)
+// Filtres
+const THEMES = ['FESTIVALS','CARNAVALS','CONCERTS','BEACH PARTYS','CROISIÈRES','SPORTS','GASTRONOMIE','NAUTISME','BUSINESS','PRO']
+const ILES = ['GUADELOUPE','MARTINIQUE','ST MARTIN','ST BARTH','ST KITTS','ANTIGUA','ANGUILLA','ARUBA','CUBA','CURAÇAO','BARBADE','DOMINIQUE','GRENADE','HAÏTI','JAMAÏQUE','ÎLES VIERGES','PORTO RICO','MIAMI','MONTSERRAT','ST DOMINGUE','STE LUCIE','TRINIDAD & TOBAGO']
+const MUSIQUES = ['SOCA','DANCE-HALL','REGGAE','ZOUK','LATINO','ELECTRO']
 
-export default async function HomePage() {
-  let featuredEvents: (Event & { packages: Package[] })[] = []
-  try {
-    const all = await getPublishedEvents()
-    featuredEvents = all.slice(0, 7)
-  } catch {
-    // DB pas dispo au build
-  }
+// Événements démo
+const EVENTS_DEMO = [
+  { id: '1', title: 'Festival Gwoka 2026', island: 'GUADELOUPE', category: 'FESTIVALS', music: 'ZOUK', date: '15 Juil 2026', price: 'Dès 25€', location: 'Sainte-Anne', img: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80' },
+  { id: '2', title: 'Carnaval de Martinique', island: 'MARTINIQUE', category: 'CARNAVALS', music: 'SOCA', date: '22 Fév 2026', price: 'Dès 15€', location: 'Fort-de-France', img: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80' },
+  { id: '3', title: 'Beach Party SXM', island: 'ST MARTIN', category: 'BEACH PARTYS', music: 'DANCE-HALL', date: '4 Juil 2026', price: 'Dès 20€', location: 'Orient Bay', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80' },
+  { id: '4', title: 'Reggae Sunsplash Jamaïque', island: 'JAMAÏQUE', category: 'CONCERTS', music: 'REGGAE', date: '10 Août 2026', price: 'Dès 45€', location: 'Kingston', img: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80' },
+  { id: '5', title: 'Croisière Caraïbes', island: 'CUBA', category: 'CROISIÈRES', music: 'LATINO', date: '1 Sept 2026', price: 'Dès 299€', location: 'La Havane', img: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&q=80' },
+  { id: '6', title: 'Electro Night Curaçao', island: 'CURAÇAO', category: 'CONCERTS', music: 'ELECTRO', date: '18 Oct 2026', price: 'Dès 35€', location: 'Willemstad', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80' },
+]
 
+export default function HomePage() {
   return (
-    <div style={{ background: 'var(--color-coco)' }}>
+    <>
+      <Header />
+      <main>
 
-      {/* ══════════════════════════════════════
-          HERO — Fond ocean, organique
-      ══════════════════════════════════════ */}
-      <section
-        className="relative flex flex-col items-center justify-center text-center overflow-hidden"
-        style={{
-          background: 'var(--color-ocean)',
-          paddingTop: '8rem',
-          paddingBottom: '0',
+        {/* ===== HERO ===== */}
+        <section style={{
+          background: 'linear-gradient(135deg, #0D3B4A 0%, #1A6B4A 100%)',
           minHeight: '92vh',
-        }}
-      >
-        {/* Cercles décoratifs subtils */}
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            width: '600px',
-            height: '600px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(42,191,191,0.08) 0%, transparent 70%)',
-            top: '-100px',
-            right: '-100px',
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            width: '400px',
-            height: '400px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(224,117,96,0.06) 0%, transparent 70%)',
-            bottom: '80px',
-            left: '-80px',
-          }}
-          aria-hidden="true"
-        />
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          padding: '100px 24px 60px',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+          {/* Cercles décoratifs */}
+          <div style={{ position: 'absolute', top: -100, right: -100, width: 400, height: 400, borderRadius: '50%', background: 'rgba(155,189,182,0.12)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', bottom: -80, left: -80, width: 300, height: 300, borderRadius: '50%', background: 'rgba(242,199,68,0.1)', pointerEvents: 'none' }} />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-8 pb-20">
-          {/* Logo */}
-          <div className="flex justify-center mb-8">
-            <Image
-              src="/logo.jpg"
-              alt="CaribbeOne"
-              width={80}
-              height={80}
-              className="object-cover"
-              style={{ borderRadius: '20px', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
-            />
-          </div>
+          <div style={{ position: 'relative', zIndex: 1, maxWidth: 800, margin: '0 auto' }}>
+            <span style={{ fontFamily: "'Caveat', cursive", fontSize: '1.3rem', color: '#9CBDB6', letterSpacing: 1 }}>
+              ain&apos;t nothin&apos; like caribbean life !
+            </span>
 
-          {/* Label */}
-          <p
-            className="text-sm font-semibold mb-4 tracking-widest uppercase"
-            style={{ color: 'var(--color-sauge)', fontFamily: 'var(--font-body)', letterSpacing: '0.15em' }}
-          >
-            Billetterie inter-îles Caraïbes
-          </p>
-
-          {/* H1 */}
-          <h1
-            className="font-bold leading-tight mb-4"
-            style={{
-              fontFamily: 'var(--font-display)',
+            <h1 style={{
+              fontFamily: "'Baloo 2', cursive",
+              fontWeight: 800,
               fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-              color: '#FAFAF8',
+              color: '#FFFFFF',
               lineHeight: 1.1,
-            }}
-          >
-            La billetterie qui célèbre<br />
-            <span style={{ color: 'var(--color-sauge)' }}>la vie caribéenne</span>
-          </h1>
+              margin: '16px 0 24px',
+            }}>
+              Découvrez les meilleurs<br/>
+              <span style={{ color: '#F2C744' }}>événements des Caraïbes</span>
+            </h1>
 
-          {/* Tagline Caveat */}
-          <p
-            className="mb-10 italic"
-            style={{
-              fontFamily: 'var(--font-script)',
-              fontSize: 'clamp(1.3rem, 3vw, 1.8rem)',
-              color: 'var(--color-sauge)',
-              opacity: 0.85,
-            }}
-          >
-            ain&apos;t nothin&apos; like caribbean life !
-          </p>
+            <p style={{ fontFamily: "'Nunito', sans-serif", fontSize: '1.15rem', color: 'rgba(255,255,255,0.78)', maxWidth: 560, margin: '0 auto 40px', lineHeight: 1.7 }}>
+              Festivals, concerts, carnavals, croisières... Réservez vos billets et vos packs ferry + hébergement en quelques clics.
+            </p>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/evenements"
-              className="inline-flex items-center gap-2 px-8 py-4 font-semibold text-base transition-all hover:opacity-90 hover:-translate-y-0.5"
-              style={{
-                background: 'var(--color-corail)',
-                color: '#fff',
-                borderRadius: 'var(--radius-xl)',
-                fontFamily: 'var(--font-display)',
-                boxShadow: '0 4px 16px rgba(224,117,96,0.4)',
-              }}
-            >
-              Voir les événements
-            </Link>
-            <Link
-              href="/organisateur"
-              className="inline-flex items-center gap-2 px-8 py-4 font-semibold text-base transition-all hover:bg-white hover:text-ocean"
-              style={{
-                border: '2px solid rgba(250,250,248,0.5)',
-                color: '#FAFAF8',
-                borderRadius: 'var(--radius-xl)',
-                fontFamily: 'var(--font-display)',
-              }}
-            >
-              Je suis organisateur
-            </Link>
-          </div>
-
-          {/* Îles label */}
-          <p
-            className="mt-10 text-sm"
-            style={{ color: 'rgba(250,250,248,0.4)', fontFamily: 'var(--font-body)' }}
-          >
-            Guadeloupe · Martinique · Marie-Galante · Les Saintes
-          </p>
-        </div>
-
-        {/* Vague de transition vers le fond clair */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <WaveDivider fill="var(--color-coco)" from="transparent" />
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════
-          PROCHAINS ÉVÉNEMENTS
-      ══════════════════════════════════════ */}
-      <section className="py-16 md:py-24" style={{ background: 'var(--color-coco)' }}>
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="flex items-end justify-between mb-3">
-            <h2
-              className="leading-tight"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-                color: 'var(--color-noir)',
-              }}
-            >
-              Prochains{' '}
-              <span style={{ color: 'var(--color-turquoise)' }}>événements</span>
-            </h2>
-            <Link
-              href="/evenements"
-              className="hidden md:inline-flex items-center gap-1 text-sm font-medium transition-opacity hover:opacity-70"
-              style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}
-            >
-              Tout voir →
-            </Link>
-          </div>
-          <p
-            className="mb-10"
-            style={{
-              fontFamily: 'var(--font-script)',
-              fontSize: '1.2rem',
-              color: 'var(--color-sauge)',
-            }}
-          >
-            Les plus belles soirées de l&apos;archipel
-          </p>
-
-          <EventGrid events={featuredEvents} />
-
-          <div className="mt-8 md:hidden text-center">
-            <Link
-              href="/evenements"
-              className="inline-flex items-center gap-2 px-8 py-3 text-sm font-semibold transition-opacity hover:opacity-80"
-              style={{
-                border: '2px solid var(--color-turquoise)',
-                color: 'var(--color-turquoise)',
-                borderRadius: 'var(--radius-xl)',
-                fontFamily: 'var(--font-display)',
-              }}
-            >
-              Voir tous les événements
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════
-          PACKAGES ÎLES — Fond sable
-      ══════════════════════════════════════ */}
-      <div>
-        <WaveDivider fill="var(--color-sable)" from="var(--color-coco)" />
-        <section
-          id="about"
-          className="py-16 md:py-24"
-          style={{ background: 'var(--color-sable)', marginTop: '-1px' }}
-        >
-          <div className="max-w-7xl mx-auto px-4 md:px-8">
-            <div className="mb-12">
-              <h2
-                className="leading-tight mb-2"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-                  color: 'var(--color-noir)',
-                }}
-              >
-                Voyager &amp; Célébrer
-              </h2>
-              <p
-                style={{
-                  fontFamily: 'var(--font-script)',
-                  fontSize: '1.3rem',
-                  color: 'var(--color-corail)',
-                }}
-              >
-                Des packs complets ferry + billet + hébergement
-              </p>
+            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Link href="/evenements" style={{
+                background: '#E07560', color: '#FFFFFF',
+                padding: '14px 32px', borderRadius: 999,
+                fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: '1rem',
+                textDecoration: 'none', transition: 'transform 0.2s',
+              }}>
+                Explorer les événements
+              </Link>
+              <Link href="/organisateur/evenements/nouveau" style={{
+                background: 'transparent', color: '#FFFFFF',
+                padding: '14px 32px', borderRadius: 999,
+                border: '2px solid rgba(255,255,255,0.5)',
+                fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: '1rem',
+                textDecoration: 'none',
+              }}>
+                Je suis organisateur
+              </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: '🌊',
-                  label: 'Ferry',
-                  title: 'Traversée incluse',
-                  desc: "Réservez votre billet et la traversée maritime en un seul achat. Aller-retour, simple et sécurisé.",
-                  color: 'var(--color-turquoise)',
-                },
-                {
-                  icon: '🏨',
-                  label: 'Hébergement',
-                  title: 'Séjour sur l\'île',
-                  desc: "Nuit(s) d'hôtel sur l'île de l'événement. Réveils sans stress, profitez de chaque moment.",
-                  color: 'var(--color-sauge)',
-                },
-                {
-                  icon: '🎟️',
-                  label: 'Billet',
-                  title: 'Entrée garantie',
-                  desc: "Votre e-billet sécurisé, envoyé instantanément. QR code scannable à l'entrée, sans file d'attente.",
-                  color: 'var(--color-corail)',
-                },
-              ].map(({ icon, label, title, desc, color }) => (
-                <div
-                  key={label}
-                  className="flex flex-col gap-4 p-7 bg-white"
-                  style={{
-                    borderRadius: 'var(--radius-lg)',
-                    boxShadow: '0 4px 24px rgba(13,59,74,0.06)',
-                  }}
-                >
-                  <div
-                    className="w-14 h-14 flex items-center justify-center text-2xl"
-                    style={{ borderRadius: 'var(--radius-md)', background: `${color}22` }}
-                  >
-                    {icon}
-                  </div>
-                  <div>
-                    <p
-                      className="text-xs font-semibold mb-1 uppercase tracking-wide"
-                      style={{ color, fontFamily: 'var(--font-display)' }}
-                    >
-                      {label}
-                    </p>
-                    <h3
-                      className="text-xl font-bold mb-2"
-                      style={{ fontFamily: 'var(--font-display)', color: 'var(--color-noir)' }}
-                    >
-                      {title}
-                    </h3>
-                    <p
-                      className="text-sm leading-relaxed"
-                      style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}
-                    >
-                      {desc}
-                    </p>
-                  </div>
+            {/* Stats */}
+            <div style={{ display: 'flex', gap: 48, justifyContent: 'center', marginTop: 56, flexWrap: 'wrap' }}>
+              {[['22', 'Îles'], ['50+', 'Événements'], ['10K+', 'Festivaliers']].map(([n, l]) => (
+                <div key={l} style={{ textAlign: 'center' }}>
+                  <div style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 800, fontSize: '2rem', color: '#F2C744' }}>{n}</div>
+                  <div style={{ fontFamily: "'Nunito', sans-serif", color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>{l}</div>
                 </div>
               ))}
             </div>
+          </div>
 
-            <div className="mt-10 text-center">
-              <Link
-                href="/evenements"
-                className="inline-flex items-center gap-2 px-8 py-4 font-semibold transition-all hover:opacity-90 hover:-translate-y-0.5"
-                style={{
-                  background: 'var(--color-ocean)',
-                  color: '#fff',
-                  borderRadius: 'var(--radius-xl)',
-                  fontFamily: 'var(--font-display)',
-                  boxShadow: '0 4px 16px rgba(13,59,74,0.2)',
-                }}
-              >
-                Découvrir les packs →
-              </Link>
+          {/* Vague */}
+          <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', bottom: -1, left: 0, right: 0, width: '100%' }}>
+            <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#F8F9FA"/>
+          </svg>
+        </section>
+
+        {/* ===== FILTRES ===== */}
+        <section style={{ background: '#F8F9FA', padding: '48px 0 40px' }}>
+          <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+
+            {/* Filtres par thème */}
+            <div style={{ marginBottom: 28 }}>
+              <h3 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: '0.8rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>
+                PAR THÈME
+              </h3>
+              <div className="scroll-x" style={{ display: 'flex', gap: 8, paddingBottom: 4 }}>
+                {THEMES.map(t => (
+                  <span key={t} className="filter-pill">{t}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Filtres par île */}
+            <div style={{ marginBottom: 28 }}>
+              <h3 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: '0.8rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>
+                PAR ÎLE
+              </h3>
+              <div className="scroll-x" style={{ display: 'flex', gap: 8, paddingBottom: 4 }}>
+                {ILES.map(i => (
+                  <span key={i} className="filter-pill teal">{i}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Filtres par musique */}
+            <div>
+              <h3 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: '0.8rem', color: '#6B7280', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>
+                PAR STYLE MUSICAL
+              </h3>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {MUSIQUES.map(m => (
+                  <span key={m} className="filter-pill coral">{m}</span>
+                ))}
+              </div>
             </div>
           </div>
         </section>
-        <WaveDivider fill="var(--color-noir)" from="var(--color-sable)" />
-      </div>
 
-      {/* ══════════════════════════════════════
-          CTA ORGANISATEURS
-      ══════════════════════════════════════ */}
-      <section
-        className="py-20 md:py-28 relative overflow-hidden"
-        style={{ background: 'var(--color-noir)', marginTop: '-1px' }}
-      >
-        {/* Cercle déco */}
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            width: '500px',
-            height: '500px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(156,189,182,0.07) 0%, transparent 70%)',
-            top: '-100px',
-            right: '-50px',
-          }}
-          aria-hidden="true"
-        />
+        {/* ===== ÉVÉNEMENTS ===== */}
+        <section style={{ background: '#FFFFFF', padding: '60px 0' }}>
+          <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 40, flexWrap: 'wrap', gap: 16 }}>
+              <div>
+                <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 800, fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', color: '#1A1A1A', margin: 0, lineHeight: 1.1 }}>
+                  Prochains événements
+                </h2>
+                <p style={{ fontFamily: "'Caveat', cursive", fontSize: '1.2rem', color: '#9CBDB6', marginTop: 6 }}>
+                  Des Antilles à toutes les Caraïbes
+                </p>
+              </div>
+              <Link href="/evenements" style={{
+                background: 'transparent', color: '#1A1A1A',
+                padding: '10px 24px', borderRadius: 999,
+                border: '2px solid #1A1A1A',
+                fontFamily: "'Baloo 2', cursive", fontWeight: 700,
+                textDecoration: 'none', fontSize: '0.9rem',
+                whiteSpace: 'nowrap',
+              }}>
+                Voir tout →
+              </Link>
+            </div>
 
-        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-          <div className="max-w-2xl">
-            <h2
-              className="leading-tight mb-4"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2.2rem, 5.5vw, 4rem)',
-                color: '#FAFAF8',
-              }}
-            >
-              Vous organisez<br />
-              <span style={{ color: 'var(--color-sauge)' }}>un événement ?</span>
+            {/* Grille événements */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+              gap: 24,
+            }}>
+              {EVENTS_DEMO.map(event => (
+                <Link key={event.id} href={`/evenements/${event.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <div className="event-card">
+                    <div style={{ position: 'relative', aspectRatio: '16/10', overflow: 'hidden' }}>
+                      <img
+                        src={event.img}
+                        alt={event.title}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s' }}
+                        onMouseOver={e => (e.currentTarget.style.transform = 'scale(1.05)')}
+                        onMouseOut={e => (e.currentTarget.style.transform = 'scale(1)')}
+                      />
+                      {/* Badge île */}
+                      <span style={{
+                        position: 'absolute', top: 12, left: 12,
+                        background: '#9CBDB6', color: '#FFFFFF',
+                        padding: '4px 12px', borderRadius: 999,
+                        fontFamily: "'Baloo 2', cursive", fontWeight: 700,
+                        fontSize: '0.75rem',
+                      }}>
+                        {event.island}
+                      </span>
+                      {/* Badge prix */}
+                      <span style={{
+                        position: 'absolute', top: 12, right: 12,
+                        background: '#E07560', color: '#FFFFFF',
+                        padding: '4px 12px', borderRadius: 999,
+                        fontFamily: "'Baloo 2', cursive", fontWeight: 700,
+                        fontSize: '0.75rem',
+                      }}>
+                        {event.price}
+                      </span>
+                    </div>
+                    <div style={{ padding: '20px 20px 22px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                        <span style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.82rem', fontWeight: 600, color: '#E07560', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                          {event.category}
+                        </span>
+                        <span style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.82rem', color: '#6B7280' }}>
+                          {event.music}
+                        </span>
+                      </div>
+                      <h3 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: '1.2rem', color: '#1A1A1A', margin: '0 0 10px', lineHeight: 1.3 }}>
+                        {event.title}
+                      </h3>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.88rem', color: '#6B7280', display: 'flex', alignItems: 'center', gap: 4 }}>
+                          📅 {event.date}
+                        </span>
+                        <span style={{ fontFamily: "'Nunito', sans-serif", fontSize: '0.88rem', color: '#6B7280' }}>
+                          📍 {event.location}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ===== PACK ÎLES ===== */}
+        <section style={{ background: '#F8F9FA', padding: '72px 0' }}>
+          <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', marginTop: -1, transform: 'rotate(180deg)' }}>
+            <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#FFFFFF"/>
+          </svg>
+          <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', textAlign: 'center' }}>
+            <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 800, fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', color: '#1A1A1A', marginBottom: 8 }}>
+              Packs tout-en-un
             </h2>
-            <p
-              className="text-base mb-8 leading-relaxed"
-              style={{
-                color: 'rgba(250,250,248,0.6)',
-                fontFamily: 'var(--font-body)',
-                maxWidth: '480px',
-              }}
-            >
-              Publiez vos événements, gérez vos packs inter-îles et recevez vos paiements en autonomie.
-              Diaspora, ferry, hébergement — tout configuré en quelques clics.
+            <p style={{ fontFamily: "'Caveat', cursive", fontSize: '1.2rem', color: '#9CBDB6', marginBottom: 48 }}>
+              Ferry + Billet + Hébergement
             </p>
-            <Link
-              href="/organisateur"
-              className="inline-flex items-center gap-2 px-8 py-4 font-semibold transition-all hover:opacity-90 hover:-translate-y-0.5"
-              style={{
-                background: 'var(--color-sauge)',
-                color: 'var(--color-noir)',
-                borderRadius: 'var(--radius-xl)',
-                fontFamily: 'var(--font-display)',
-                fontSize: '1rem',
-              }}
-            >
-              Accéder au back-office →
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24, maxWidth: 960, margin: '0 auto' }}>
+              {[
+                { icon: '⛴️', title: 'Pack Ferry', desc: 'Réservez votre traversée inter-îles depuis votre point de départ', color: '#9CBDB6' },
+                { icon: '🎟️', title: 'Pack Billet', desc: 'E-billet avec QR code, accès garanti à tous les événements', color: '#E07560' },
+                { icon: '🏨', title: 'Pack Séjour', desc: "Hébergement sélectionné proche du lieu de l'événement", color: '#1A6B4A' },
+              ].map(p => (
+                <div key={p.title} style={{ background: '#FFFFFF', borderRadius: 20, padding: '36px 28px', boxShadow: '0 2px 16px rgba(0,0,0,0.06)', textAlign: 'center' }}>
+                  <div style={{ fontSize: '2.8rem', marginBottom: 16 }}>{p.icon}</div>
+                  <h3 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: '1.3rem', color: '#1A1A1A', marginBottom: 10 }}>
+                    {p.title}
+                  </h3>
+                  <p style={{ fontFamily: "'Nunito', sans-serif", color: '#6B7280', lineHeight: 1.6, fontSize: '0.95rem' }}>
+                    {p.desc}
+                  </p>
+                  <div style={{ marginTop: 20, height: 3, background: p.color, borderRadius: 4 }} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ===== CTA ORGANISATEURS ===== */}
+        <section style={{ background: '#1A1A1A', padding: '80px 24px', textAlign: 'center' }}>
+          <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', marginBottom: 48, transform: 'rotate(180deg)', marginTop: -80 }}>
+            <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#F8F9FA"/>
+          </svg>
+          <div style={{ maxWidth: 700, margin: '0 auto' }}>
+            <h2 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 800, fontSize: 'clamp(2rem, 5vw, 3.2rem)', color: '#FFFFFF', lineHeight: 1.15, marginBottom: 16 }}>
+              Vous organisez un événement ?
+            </h2>
+            <p style={{ fontFamily: "'Nunito', sans-serif", color: 'rgba(255,255,255,0.7)', fontSize: '1.05rem', lineHeight: 1.7, marginBottom: 36 }}>
+              Publiez votre événement en autonomie, gérez vos packs transport et hébergement, encaissez directement via Stripe.
+            </p>
+            <Link href="/organisateur/evenements/nouveau" style={{
+              background: '#9CBDB6', color: '#1A1A1A',
+              padding: '16px 40px', borderRadius: 999,
+              fontFamily: "'Baloo 2', cursive", fontWeight: 700, fontSize: '1.1rem',
+              textDecoration: 'none',
+            }}>
+              Créer mon événement gratuitement
             </Link>
           </div>
-        </div>
-      </section>
+        </section>
 
-    </div>
+      </main>
+      <Footer />
+    </>
   )
 }

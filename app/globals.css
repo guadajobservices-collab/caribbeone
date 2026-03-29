@@ -1,48 +1,69 @@
 @import "tailwindcss";
 
 :root {
-  --color-noir:       #1A1A1A;
-  --color-sauge:      #9CBDB6;
-  --color-turquoise:  #2ABFBF;
-  --color-corail:     #E07560;
-  --color-sable:      #F5E6D0;
-  --color-coco:       #FAFAF8;
-  --color-ocean:      #0D3B4A;
-  --color-muted:      #6B7280;
-
-  --font-display: var(--font-baloo), 'Baloo 2', cursive;
-  --font-body:    var(--font-nunito), 'Nunito', sans-serif;
-  --font-script:  var(--font-caveat), 'Caveat', cursive;
-
-  --radius-sm:   8px;
-  --radius-md:   16px;
-  --radius-lg:   24px;
-  --radius-xl:   40px;
-  --radius-full: 9999px;
+  --noir:   #1A1A1A;
+  --sauge:  #9CBDB6;
+  --vert:   #1A6B4A;
+  --jaune:  #F2C744;
+  --corail: #E07560;
+  --blanc:  #FFFFFF;
+  --clair:  #F8F9FA;
+  --ocean:  #0D3B4A;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; }
+* { box-sizing: border-box; }
 
 body {
-  background: var(--color-coco);
-  color: var(--color-noir);
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
+  background: var(--clair);
+  color: var(--noir);
+  font-family: 'Nunito', sans-serif;
+  margin: 0;
 }
 
-h1, h2, h3 {
-  font-family: var(--font-display);
+/* Tags/pills de filtres */
+.filter-pill {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 2px solid var(--noir);
+  font-family: 'Baloo 2', cursive;
   font-weight: 700;
-  line-height: 1.15;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--noir);
+  background: var(--blanc);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-
-h4, h5, h6 {
-  font-family: var(--font-body);
-  font-weight: 600;
+.filter-pill:hover,
+.filter-pill.active {
+  background: var(--noir);
+  color: var(--blanc);
 }
+.filter-pill.teal { border-color: var(--sauge); color: var(--sauge); }
+.filter-pill.teal:hover { background: var(--sauge); color: var(--blanc); }
+.filter-pill.coral { border-color: var(--corail); color: var(--corail); }
+.filter-pill.coral:hover { background: var(--corail); color: var(--blanc); }
 
-.font-display { font-family: var(--font-display); }
-.font-script  { font-family: var(--font-script); }
-.font-body    { font-family: var(--font-body); }
+/* Scrollbar horizontale invisible pour les filtres */
+.scroll-x {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scroll-x::-webkit-scrollbar { display: none; }
+
+/* Card événement */
+.event-card {
+  background: var(--blanc);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+}

@@ -1,113 +1,38 @@
-import Link from 'next/link'
 import Image from 'next/image'
-
-const WaveDivider = ({ fill = '#0D3B4A', from = '#F5E6D0' }) => (
-  <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ background: from }}>
-    <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill={fill} />
-  </svg>
-)
+import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer>
-      <WaveDivider fill="#0D3B4A" from="#1A1A1A" />
-
-      <div style={{ background: 'var(--color-ocean)' }}>
-        <div className="max-w-7xl mx-auto px-4 md:px-8 pt-12 pb-8">
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
-            {/* Logo + tagline */}
-            <div className="flex flex-col gap-3 max-w-xs">
-              <Image
-                src="/logo.jpg"
-                alt="CaribbeOne"
-                width={52}
-                height={52}
-                className="object-cover"
-                style={{ borderRadius: '12px' }}
-              />
-              <p
-                className="text-base leading-snug"
-                style={{
-                  fontFamily: 'var(--font-script)',
-                  color: 'var(--color-sauge)',
-                  fontSize: '1.2rem',
-                }}
-              >
-                ain&apos;t nothin&apos; like caribbean life !
-              </p>
-              <p className="text-sm" style={{ color: 'rgba(250,250,248,0.5)', fontFamily: 'var(--font-body)' }}>
-                Billetterie événementielle inter-îles Caraïbes
-              </p>
-            </div>
-
-            {/* Liens */}
-            <div className="flex flex-wrap gap-x-12 gap-y-6">
-              <div className="flex flex-col gap-2">
-                <p
-                  className="text-xs mb-1 font-semibold"
-                  style={{ color: 'var(--color-sauge)', fontFamily: 'var(--font-display)', letterSpacing: '0.08em' }}
-                >
-                  Découvrir
-                </p>
-                {[
-                  { href: '/evenements', label: 'Tous les événements' },
-                  { href: '/evenements?island=guadeloupe', label: 'Guadeloupe' },
-                  { href: '/evenements?island=martinique', label: 'Martinique' },
-                  { href: '/evenements?island=marie-galante', label: 'Marie-Galante' },
-                ].map(({ href, label }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    className="text-sm transition-opacity hover:opacity-70"
-                    style={{ color: 'rgba(250,250,248,0.65)', fontFamily: 'var(--font-body)' }}
-                  >
-                    {label}
-                  </Link>
-                ))}
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <p
-                  className="text-xs mb-1 font-semibold"
-                  style={{ color: 'var(--color-sauge)', fontFamily: 'var(--font-display)', letterSpacing: '0.08em' }}
-                >
-                  Organisateurs
-                </p>
-                {[
-                  { href: '/organisateur', label: 'Espace organisateur' },
-                  { href: '/organisateur/evenements/nouveau', label: 'Créer un événement' },
-                  { href: '/auth/inscription', label: "S'inscrire" },
-                  { href: '/auth/connexion', label: 'Se connecter' },
-                ].map(({ href, label }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    className="text-sm transition-opacity hover:opacity-70"
-                    style={{ color: 'rgba(250,250,248,0.65)', fontFamily: 'var(--font-body)' }}
-                  >
-                    {label}
-                  </Link>
-                ))}
-              </div>
-            </div>
+    <footer style={{ background: '#0D3B4A', color: 'rgba(255,255,255,0.8)', padding: '48px 24px 32px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 40, marginBottom: 40 }}>
+          <div>
+            <Image src="/logo.jpg" alt="CaribbeOne" width={120} height={40} style={{ height: 40, width: 'auto', marginBottom: 12 }} />
+            <p style={{ fontFamily: "'Caveat', cursive", fontSize: '1rem', color: '#9CBDB6', lineHeight: 1.5 }}>
+              ain&apos;t nothin&apos; like caribean life !
+            </p>
           </div>
-
-          {/* Bottom */}
-          <div
-            className="mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs"
-            style={{ borderTop: '1px solid rgba(156,189,182,0.15)', color: 'rgba(250,250,248,0.35)', fontFamily: 'var(--font-body)' }}
-          >
-            <p>© 2026 CaribbeOne. Tous droits réservés.</p>
-            <div className="flex gap-6">
-              {[
-                { href: '/mentions-legales', label: 'Mentions légales' },
-                { href: '/cgu', label: 'CGU' },
-                { href: '/confidentialite', label: 'Confidentialité' },
-              ].map(({ href, label }) => (
-                <Link key={href} href={href} className="hover:opacity-70 transition-opacity">{label}</Link>
-              ))}
-            </div>
+          <div>
+            <h4 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, color: '#FFFFFF', marginBottom: 16, fontSize: '1rem' }}>Événements</h4>
+            {['Festivals','Concerts','Carnavals','Beach Partys'].map(l => (
+              <Link key={l} href="#" style={{ display: 'block', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', marginBottom: 8, fontFamily: "'Nunito', sans-serif", fontSize: '0.9rem' }}>{l}</Link>
+            ))}
           </div>
+          <div>
+            <h4 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, color: '#FFFFFF', marginBottom: 16, fontSize: '1rem' }}>Îles phares</h4>
+            {['Guadeloupe','Martinique','St Martin','Jamaïque'].map(l => (
+              <Link key={l} href="#" style={{ display: 'block', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', marginBottom: 8, fontFamily: "'Nunito', sans-serif", fontSize: '0.9rem' }}>{l}</Link>
+            ))}
+          </div>
+          <div>
+            <h4 style={{ fontFamily: "'Baloo 2', cursive", fontWeight: 700, color: '#FFFFFF', marginBottom: 16, fontSize: '1rem' }}>Organisateurs</h4>
+            {['Créer un événement','Mon espace','Scanner QR','Mes ventes'].map(l => (
+              <Link key={l} href="#" style={{ display: 'block', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', marginBottom: 8, fontFamily: "'Nunito', sans-serif", fontSize: '0.9rem' }}>{l}</Link>
+            ))}
+          </div>
+        </div>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 24, textAlign: 'center', fontFamily: "'Nunito', sans-serif", fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)' }}>
+          © 2026 CaribbeOne · Tous droits réservés · <Link href="#" style={{ color: '#9CBDB6', textDecoration: 'none' }}>CGU</Link> · <Link href="#" style={{ color: '#9CBDB6', textDecoration: 'none' }}>Confidentialité</Link>
         </div>
       </div>
     </footer>
