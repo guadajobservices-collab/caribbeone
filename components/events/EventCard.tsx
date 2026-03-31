@@ -79,7 +79,7 @@ export default function EventCard({ event, size = 'small' }: EventCardProps) {
             {event.title}
           </h3>
           <p className="text-sm mt-1" style={{ color: 'rgba(250,250,248,0.6)', fontFamily: 'var(--font-body)' }}>
-            {event.venue}
+            {event.location}
           </p>
         </div>
         {/* Prix */}
@@ -148,7 +148,7 @@ export default function EventCard({ event, size = 'small' }: EventCardProps) {
             {event.title}
           </h3>
           <p className="text-xs mt-0.5 truncate" style={{ color: 'var(--color-muted)' }}>
-            {event.venue} · {islandLabel(event.island)}
+            {event.location} · {islandLabel(event.island)}
           </p>
         </div>
         <div className="flex-shrink-0 text-right">
@@ -233,7 +233,7 @@ export default function EventCard({ event, size = 'small' }: EventCardProps) {
         </h3>
         <div className="flex justify-between items-center">
           <span className="text-sm" style={{ color: 'var(--color-muted)', fontFamily: 'var(--font-body)' }}>
-            {event.venue}
+            {event.location}
           </span>
           {minPrice !== null && (
             <span

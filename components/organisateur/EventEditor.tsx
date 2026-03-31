@@ -12,7 +12,7 @@ export default function EventEditor({ event }: Props) {
   const router = useRouter()
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
-  const [form, setForm] = useState<{title:string;slug:string;category:string;island:string;venue:string;description:string;starts_at:string;ends_at:string;status:string}>({
+  const [form, setForm] = useState<{title:string;slug:string;category:string;island:string;venue?:string;location?:string;description:string;starts_at:string;ends_at:string;status:string}>({
     title: event.title, slug: event.slug, category: event.category,
     island: event.island, venue: event.venue, description: event.description || '',
     starts_at: event.starts_at.substring(0, 16), ends_at: event.ends_at?.substring(0, 16) || '',

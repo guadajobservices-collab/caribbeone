@@ -26,7 +26,7 @@ export default function EventForm({ eventId, initialData }: EventFormProps) {
     short_description: '',
     start_date: '',
     end_date: '',
-    venue: '',
+    location: '',
     address: '',
     island_id: '',
     category_id: '',
@@ -108,7 +108,7 @@ export default function EventForm({ eventId, initialData }: EventFormProps) {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
         <div style={fieldStyle}>
           <label style={labelStyle}>Lieu</label>
-          <input style={inputStyle} value={form.venue as string} onChange={e => set('venue', e.target.value)} />
+          <input style={inputStyle} value={form.location as string} onChange={e => set('location', e.target.value)} />
         </div>
         <div style={fieldStyle}>
           <label style={labelStyle}>Adresse</label>

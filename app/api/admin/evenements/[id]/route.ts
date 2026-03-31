@@ -18,7 +18,7 @@ export async function PATCH(request: Request, { params }: Props) {
     const body = await request.json()
 
     const updateData: Record<string, unknown> = {}
-    const fields = ['title', 'slug', 'description', 'short_description', 'start_date', 'end_date', 'venue', 'address', 'island_id', 'category_id', 'music_style_id', 'cover_image', 'status']
+    const fields = ['title', 'slug', 'description', 'short_description', 'start_date', 'end_date', 'location', 'address', 'island_id', 'category_id', 'music_style_id', 'cover_image', 'status']
     for (const f of fields) {
       if (f in body) updateData[f] = body[f] || null
     }

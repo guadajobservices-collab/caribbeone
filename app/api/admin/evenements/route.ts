@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       short_description: body.short_description || null,
       start_date: body.start_date || null,
       end_date: body.end_date || null,
-      venue: body.venue || null,
+      location: body.location || body.venue || null,
       address: body.address || null,
       island_id: body.island_id || null,
       category_id: body.category_id || null,

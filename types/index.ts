@@ -25,7 +25,8 @@ export interface Event {
   category: string
   subcategory?: string
   island: Island
-  venue: string
+  venue?: string
+  location?: string
   starts_at: string
   ends_at?: string
   description?: string
